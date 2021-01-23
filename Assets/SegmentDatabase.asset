@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf582a1b6ca2cbb47870752c489d25e0, type: 3}
+  m_Name: SegmentDatabase
+  m_EditorClassIdentifier: 
+  segmentsAmount: 12
+  segmentsTypes:
+  - name: Ground
+    prefab: {fileID: 5606025417607234679, guid: a9e6bab22e81ffe4eb30b54f39536a05, type: 3}
+    min: 7
+    max: 10
+  - name: Let
+    prefab: {fileID: 5606025417607234679, guid: abd7f6a6780c1f14b9f6041ae4a33714, type: 3}
+    min: 2
+    max: 4
+  - name: Abyss
+    prefab: {fileID: 5606025417607234679, guid: 4ad3945c75756a808aeaa3b5ed4818f7, type: 3}
+    min: 4
+    max: 6
