@@ -1,12 +1,8 @@
 ﻿using UnityEngine;
-using Random = UnityEngine.Random;
 using System.Collections.Generic;
-using System.Linq;
 
 public class Platform : PoolObject
 {
-    [SerializeField] private Color[] touchColors;
-
     public static bool isFirstPlatform = true;
 
     public float radius;
@@ -50,7 +46,7 @@ public class Platform : PoolObject
         gameObject.transform.SetParent(GameObject.Find("Pool").transform);
         gameObject.SetActive(false);
         countPlayerTouches = 0;
-        segments = null;
+        //segments = null;
         UnSubscribePlatformOnCheckSwipe();
     }
 
@@ -79,8 +75,8 @@ public class Platform : PoolObject
         }
 
         
-        /*
-        int rand1 = Random.Range(0, 4);
+        
+        /*int rand1 = Random.Range(0, 4);
         int randomSegment = Random.Range(0, segmentsAmount);
 
         if (rand1 <= 2) GameObject.Find("PowerUpsGenerator").GetComponent<PowerUpsGenerator>().GenerateRandomPowerUpBySegment(segments[randomSegment]);*/

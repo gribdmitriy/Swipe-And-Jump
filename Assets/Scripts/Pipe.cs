@@ -10,11 +10,9 @@ public class Pipe : MonoBehaviour
     private List<GameObject> platforms;
     public Vector3[] spawnPoints;
     private float speedPlatforms;
-
-    private void Awake()
-    {
-        
-    }
+    private bool startInit;
+    private Collider gameOver;
+    private List<string[]> patterns = new List<string[]>();
 
     private void Start()
     {
@@ -22,22 +20,44 @@ public class Pipe : MonoBehaviour
         spawnPoints = new Vector3[6];
         platforms = new List<GameObject>();
         m_r = GetComponent<MeshRenderer>();
+        startInit = true;
         InitPlatforms();
+        startInit = false;
     }
 
     private void InitPlatforms()
     {
         for (int i = 0; i < spawnPoints.Length; i++)
             spawnPoints[i] = new Vector3(0, i * -3, 0);
-
+        
         for (int i = 0; i < spawnPoints.Length; i++)
             platforms.Add(PoolManager.GetObject(prefab.name, spawnPoints[i], Quaternion.identity));
 
         string[] pattern = new string[12] { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Ground", "Ground", "Ground", "Ground" };
 
+        int j = 0;
         foreach (GameObject t in platforms)
-            t.transform.gameObject.GetComponent<Platform>().ConstructPlatform(pattern);
+        {
+            if(!startInit)
+                platforms[j].gameObject.GetComponent<Platform>().SetPoint(spawnPoints[j]);
 
+            string[] pat1 = { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Ground", "Ground", "Ground", "Ground" };
+            patterns.Add(pat1);
+            string[] pat2 = { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Ground", "Ground", "Ground" };
+            patterns.Add(pat2);
+            string[] pat3 = { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Ground", "Ground" };
+            patterns.Add(pat3);
+            string[] pat4 = { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Ground" };
+            patterns.Add(pat4);
+            string[] pat5 = { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss" };
+            patterns.Add(pat5);
+            string[] pat6 = { "Abyss", "Let", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Abyss" };
+            patterns.Add(pat6);
+
+            t.transform.gameObject.GetComponent<Platform>().ConstructPlatform(patterns[j]);
+            j++;
+        }
+            
         foreach (GameObject t in platforms)
             t.transform.SetParent(transform);
 
@@ -46,11 +66,13 @@ public class Pipe : MonoBehaviour
 
     public void Reload()
     {
+        GameObject.Find("Concentration").GetComponent<Concentration>().ResetLevelConcentration();
+        int i = 0;
         foreach (GameObject t in platforms)
         {
-            t.transform.gameObject.GetComponent<Platform>().ResetPlatform();
             t.transform.gameObject.GetComponent<Platform>().UnSubscribePlatformOnCheckSwipe();
             t.transform.gameObject.GetComponent<Platform>().BreakDownPlatform();
+            i++;
         }
 
         Player.alive = true;
@@ -58,6 +80,18 @@ public class Pipe : MonoBehaviour
         Platform.isFirstPlatform = true;
         Player.DetectEvent += PlayerСollisionWithPlatform;
         InitPlatforms();
+    }
+
+    public void Continue()
+    {
+        Player.alive = true;
+        Player.DetectEvent += PlayerСollisionWithPlatform;
+        SubscribePlatformOnCheckSwipe();
+        platforms.Remove(gameOver.transform.parent.gameObject);
+        gameOver.transform.parent.GetComponent<Platform>().UnSubscribePlatformOnCheckSwipe();
+        gameOver.transform.parent.GetComponent<Platform>().BreakDownPlatform();
+        GeneratePlatform();
+        GameObject.Find("Sphere").GetComponent<Player>().Jump();
     }
 
     public void SubscribePlatformOnCheckSwipe()
@@ -92,6 +126,7 @@ public class Pipe : MonoBehaviour
             GameObject.Find("Concentration").GetComponent<Concentration>().ResetLevelConcentration();
             GameManager.ChangeGamePlayState(GameManager.GamePlayState.Gameover);
             MultiplierTimer.StopTimer();
+            gameOver = collider;
         }
         else
         if (type == Player.TypeEvent.Ground)
@@ -110,7 +145,7 @@ public class Pipe : MonoBehaviour
     public void IncreaseSpeedPlatforms(bool increaseSpeed)
     {
         if (increaseSpeed && speedPlatforms < 15)
-            speedPlatforms += 1.5f;
+            speedPlatforms += 0.5f;
         else if (!increaseSpeed)
             speedPlatforms = 8f;
 
@@ -127,8 +162,9 @@ public class Pipe : MonoBehaviour
     public void GeneratePlatform()
     {
         Vector3 platformPosition = new Vector3(0, platforms[platforms.Count - 1].transform.position.y - 3, 0);
-        platforms.Add(PoolManager.GetObject(prefab.name, platformPosition, Quaternion.identity));
 
+
+        platforms.Add(PoolManager.GetObject(prefab.name, platformPosition, Quaternion.identity));
         platforms[platforms.Count - 1].GetComponent<Platform>().ResetPlatform();
         string[] pattern = new string[12] { "Ground", "Let", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Abyss", "Ground", "Ground", "Ground", "Ground" };
 
@@ -136,13 +172,12 @@ public class Pipe : MonoBehaviour
         platforms[platforms.Count - 1].transform.SetParent(transform);
         platforms[platforms.Count - 1].GetComponent<Platform>().SubscribePlatformOnCheckSwipe();
         platforms[platforms.Count - 1].GetComponent<Platform>().ChangeSpeedPlatform(speedPlatforms);
-
+        platforms[platforms.Count - 1].transform.rotation *= platforms[platforms.Count - 2].transform.rotation;
         int i = 0;
         foreach (GameObject t in platforms)
         {
             t.transform.gameObject.GetComponent<Platform>().SetPoint(spawnPoints[i]);
             i++;
         }
-
     }
 }

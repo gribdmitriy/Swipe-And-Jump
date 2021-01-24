@@ -198,17 +198,17 @@ public class Player : MonoBehaviour
                             AccelerationEffect.IncreaseOpacityTrails(0.02f);
                             AccelerationEffect.IncreaseSpeedTrails(1);
                         }
-
+                        pipe.IncreaseSpeedPlatforms(true);
                         if (untouchablePlatformCount > 3)
                         {
-                            pipe.IncreaseSpeedPlatforms(true);
+                            
                             currentGainToScore = 3;
                             
                         }
 
                         if (untouchablePlatformCount > 5)
                         {
-                            pipe.IncreaseSpeedPlatforms(true);
+                           
                             currentGainToScore = 5;
                         }
                         Trail.ShowTrail();
@@ -236,17 +236,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void ResetPlayer()
+    public void Jump()
     {
-        
-    }
-
-    public void ContinueDetect()
-    {
-        
-        alive = true;
         state = State.BOUNCE;
-        DetectEvent(TypeEvent.Abyss, hit.collider);
+        //DetectEvent(TypeEvent.Abyss, hit.collider);
         Trail.HideTrail();
     }
 
