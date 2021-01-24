@@ -50,7 +50,7 @@ public class Platform : PoolObject
         UnSubscribePlatformOnCheckSwipe();
     }
 
-    public void ConstructPlatform(string[] pattern)
+    public void ConstructPlatform(List<string> pattern)
     {
         Vector3 position = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
 

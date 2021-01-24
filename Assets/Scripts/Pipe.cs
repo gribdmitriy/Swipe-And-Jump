@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class Pipe : MonoBehaviour
 {
@@ -33,8 +32,6 @@ public class Pipe : MonoBehaviour
         for (int i = 0; i < spawnPoints.Length; i++)
             platforms.Add(PoolManager.GetObject(prefab.name, spawnPoints[i], Quaternion.identity));
 
-        string[] pattern = new string[12] { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Ground", "Ground", "Ground", "Ground" };
-
         int j = 0;
         foreach (GameObject t in platforms)
         {
@@ -54,7 +51,7 @@ public class Pipe : MonoBehaviour
             string[] pat6 = { "Abyss", "Let", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Abyss" };
             patterns.Add(pat6);
 
-            t.transform.gameObject.GetComponent<Platform>().ConstructPlatform(patterns[j]);
+            t.transform.gameObject.GetComponent<Platform>().ConstructPlatform(GameObject.Find("PatternManager").GetComponent<PatternManager>().GetPattern());
             j++;
         }
             
@@ -120,13 +117,18 @@ public class Pipe : MonoBehaviour
         else
         if (type == Player.TypeEvent.Let)
         {
-            Player.alive = false;
-            UnSubscribePlatformOnCheckSwipe();
-            Player.DetectEvent -= PlayerСollisionWithPlatform;
-            GameObject.Find("Concentration").GetComponent<Concentration>().ResetLevelConcentration();
-            GameManager.ChangeGamePlayState(GameManager.GamePlayState.Gameover);
-            MultiplierTimer.StopTimer();
-            gameOver = collider;
+            if(Player.alive)
+            {
+
+                Player.alive = false;
+                UnSubscribePlatformOnCheckSwipe();
+                Player.DetectEvent -= PlayerСollisionWithPlatform;
+                GameObject.Find("Concentration").GetComponent<Concentration>().ResetLevelConcentration();
+                GameManager.ChangeGamePlayState(GameManager.GamePlayState.Gameover);
+                MultiplierTimer.StopTimer();
+                gameOver = collider;
+            }
+            
         }
         else
         if (type == Player.TypeEvent.Ground)
@@ -166,9 +168,8 @@ public class Pipe : MonoBehaviour
 
         platforms.Add(PoolManager.GetObject(prefab.name, platformPosition, Quaternion.identity));
         platforms[platforms.Count - 1].GetComponent<Platform>().ResetPlatform();
-        string[] pattern = new string[12] { "Ground", "Let", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Abyss", "Ground", "Ground", "Ground", "Ground" };
 
-        platforms[platforms.Count - 1].GetComponent<Platform>().ConstructPlatform(pattern);
+        platforms[platforms.Count - 1].GetComponent<Platform>().ConstructPlatform(GameObject.Find("PatternManager").GetComponent<PatternManager>().GetPattern());
         platforms[platforms.Count - 1].transform.SetParent(transform);
         platforms[platforms.Count - 1].GetComponent<Platform>().SubscribePlatformOnCheckSwipe();
         platforms[platforms.Count - 1].GetComponent<Platform>().ChangeSpeedPlatform(speedPlatforms);
