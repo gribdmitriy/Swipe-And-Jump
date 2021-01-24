@@ -5,7 +5,6 @@ using System.Collections.Generic;
 [AddComponentMenu("Pool/ObjectPooling")]
 public class ObjectPooling
 {
-
 	#region Data
 	List<PoolObject> objects;
 	Transform objectsParent;

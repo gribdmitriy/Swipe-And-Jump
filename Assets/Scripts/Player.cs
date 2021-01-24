@@ -2,6 +2,20 @@
 using System;
 using System.Threading.Tasks;
 
+public enum SegmentType
+{
+    Ground,
+    Let,
+    Abyss,
+}
+
+public enum State
+{
+    FALLING,
+    BOUNCE,
+    IDLE
+}
+
 public class Player : MonoBehaviour
 {
     public static bool alive;
@@ -17,7 +31,7 @@ public class Player : MonoBehaviour
     private Rigidbody rb;
     private MeshRenderer m_r;
     public State state;
-    private TypeEvent typeEvent;
+    private SegmentType typeEvent;
     private RaycastHit hit;
     private float speedDown;
     private float speedUp;
@@ -28,7 +42,7 @@ public class Player : MonoBehaviour
     public bool powerUpPlatrofmDestroyerIsActive = false;
     private int counter = 0;
 
-    public delegate void DetectPlayer(TypeEvent typeEvent, Collider collider);
+    public delegate void DetectPlayer(SegmentType typeEvent, Collider collider);
     public static event DetectPlayer DetectEvent;
 
     private void Start()
@@ -89,7 +103,7 @@ public class Player : MonoBehaviour
                     {
                         AccelerationEffect.IncreaseOpacityTrails(0.02f);
                         AccelerationEffect.IncreaseSpeedTrails(1);
-                        DetectEvent(TypeEvent.Abyss, hit.collider);
+                        DetectEvent(SegmentType.Abyss, hit.collider);
                         Trail.ShowTrail();
                         pipe.ChangeSpeedPlatforms(15);
                         untouchablePlatformCount = 0;
@@ -102,7 +116,7 @@ public class Player : MonoBehaviour
                         AccelerationEffect.IncreaseOpacityTrails(0.02f);
                         AccelerationEffect.IncreaseSpeedTrails(1);
                         Trail.ShowTrail();
-                        DetectEvent(TypeEvent.Abyss, hit.collider);
+                        DetectEvent(SegmentType.Abyss, hit.collider);
                         pipe.ChangeSpeedPlatforms(15);
                         untouchablePlatformCount = 0;
                         GainScore.changeGain(currentGainToScore * UIMultiplierScore.currentMultiplier * GameObject.Find("Concentration").GetComponent<Concentration>().Multiplier());
@@ -114,7 +128,7 @@ public class Player : MonoBehaviour
                         AccelerationEffect.IncreaseOpacityTrails(0.02f);
                         AccelerationEffect.IncreaseSpeedTrails(1);
                         Trail.ShowTrail();
-                        DetectEvent(TypeEvent.Abyss, hit.collider);
+                        DetectEvent(SegmentType.Abyss, hit.collider);
                         pipe.ChangeSpeedPlatforms(15);
                         untouchablePlatformCount = 0;
                         GainScore.changeGain(currentGainToScore * UIMultiplierScore.currentMultiplier * GameObject.Find("Concentration").GetComponent<Concentration>().Multiplier());
@@ -139,13 +153,13 @@ public class Player : MonoBehaviour
                         hit.collider.gameObject.GetComponent<Ground>().PlayerTouch();
                         if (untouchablePlatformCount >= 3)
                         {
-                            DetectEvent(TypeEvent.Abyss, hit.collider);
+                            DetectEvent(SegmentType.Abyss, hit.collider);
                             Trail.HideTrail();
                         }
                         else
                         {
                             Trail.HideTrail();
-                            DetectEvent(TypeEvent.Ground, hit.collider);
+                            DetectEvent(SegmentType.Ground, hit.collider);
                         }
 
                         
@@ -166,14 +180,14 @@ public class Player : MonoBehaviour
                         if (untouchablePlatformCount >= 3)
                         {
                             state = State.BOUNCE;
-                            DetectEvent(TypeEvent.Abyss, hit.collider);
+                            DetectEvent(SegmentType.Abyss, hit.collider);
                             Trail.HideTrail();
                         }
                         else
                         {
                             Trail.ShowTrail();
                             state = State.IDLE;
-                            DetectEvent(TypeEvent.Let, hit.collider);
+                            DetectEvent(SegmentType.Let, hit.collider);
                         }
                         GameObject.Find("Camera").GetComponent<CameraController>().ChangeReset();
                         untouchablePlatformCount = 0;
@@ -212,7 +226,7 @@ public class Player : MonoBehaviour
                             currentGainToScore = 5;
                         }
                         Trail.ShowTrail();
-                        DetectEvent(TypeEvent.Abyss, hit.collider);
+                        DetectEvent(SegmentType.Abyss, hit.collider);
                         GainScore.changeGain(currentGainToScore * UIMultiplierScore.currentMultiplier * GameObject.Find("Concentration").GetComponent<Concentration>().Multiplier());
                         if(Time.timeScale < 1.2f) Time.timeScale += 0.001f;
                         else { Debug.Log(Time.timeScale); }
@@ -239,7 +253,7 @@ public class Player : MonoBehaviour
     public void Jump()
     {
         state = State.BOUNCE;
-        //DetectEvent(TypeEvent.Abyss, hit.collider);
+        //DetectEvent(SegmentType.Abyss, hit.collider);
         Trail.HideTrail();
     }
 
@@ -262,19 +276,5 @@ public class Player : MonoBehaviour
             speedUp = defaultSpeedUp;
             SetTimeout(() => SetFalling(), delayInTopPosition);
         }
-    }
-
-    public enum TypeEvent
-    {   
-        Abyss,
-        Let,
-        Ground
-    }
-
-    public enum State
-    {
-        FALLING,
-        BOUNCE,
-        IDLE
     }
 }

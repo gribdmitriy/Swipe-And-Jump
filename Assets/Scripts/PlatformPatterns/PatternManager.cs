@@ -65,14 +65,14 @@ public class PatternManager : MonoBehaviour
         return currentPattern;
     }
 
-    public List<string> GetCurrentPattern()
+    public List<SegmentType> GetCurrentPattern()
     {
         return currentPattern.Segments;
     }
 
-    public List<string> GetPattern()
+    public List<SegmentType> GetPattern()
     {
-        List<string> pattern = GetCurrentPattern();
+        List<SegmentType> pattern = GetCurrentPattern();
         UpdateCurrentPattern();
         return pattern;
     }
@@ -88,6 +88,6 @@ public struct Set
 [Serializable]
 public class Pattern
 {
-    [SerializeField] private List<string> segments;
-    public List<string> Segments => segments;
+    [SerializeField] private List<SegmentType> segments;
+    public List<SegmentType> Segments => segments;
 }

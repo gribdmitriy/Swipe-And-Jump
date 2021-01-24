@@ -38,19 +38,6 @@ public class Pipe : MonoBehaviour
             if(!startInit)
                 platforms[j].gameObject.GetComponent<Platform>().SetPoint(spawnPoints[j]);
 
-            string[] pat1 = { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Ground", "Ground", "Ground", "Ground" };
-            patterns.Add(pat1);
-            string[] pat2 = { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Ground", "Ground", "Ground" };
-            patterns.Add(pat2);
-            string[] pat3 = { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Ground", "Ground" };
-            patterns.Add(pat3);
-            string[] pat4 = { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Ground" };
-            patterns.Add(pat4);
-            string[] pat5 = { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss" };
-            patterns.Add(pat5);
-            string[] pat6 = { "Abyss", "Let", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Ground", "Abyss" };
-            patterns.Add(pat6);
-
             t.transform.gameObject.GetComponent<Platform>().ConstructPlatform(GameObject.Find("PatternManager").GetComponent<PatternManager>().GetPattern());
             j++;
         }
@@ -101,48 +88,59 @@ public class Pipe : MonoBehaviour
         platforms.ForEach(elem => elem.GetComponent<Platform>().UnSubscribePlatformOnCheckSwipe());
     }
 
-    private void PlayerСollisionWithPlatform(Player.TypeEvent type, Collider collider)
+    private void PlayerСollisionWithPlatform(SegmentType type, Collider collider)
     {
-        if (type == Player.TypeEvent.Abyss)
+        switch (type)
         {
-            if (collider.tag == "Ground" || collider.tag == "Let")
-                collider.transform.parent.GetComponent<Platform>().ChangeGroundColor(2);
+            case SegmentType.Ground: 
+                PlayerСollideWithGround(collider);
+                break;
 
+            case SegmentType.Let:
+                PlayerСollideWithLet(collider);
+                break;
+
+            case SegmentType.Abyss:
+                PlayerСollideWithAbyss(collider);
+                break;
+        }
+    }
+
+    private void PlayerСollideWithGround(Collider collider)
+    {
+        if (collider.transform.parent.GetComponent<Platform>().countPlayerTouches == 3)
+        {
             platforms.Remove(collider.transform.parent.gameObject);
             collider.transform.parent.GetComponent<Platform>().UnSubscribePlatformOnCheckSwipe();
             collider.transform.parent.GetComponent<Platform>().BreakDownPlatform();
-
             GeneratePlatform();
         }
-        else
-        if (type == Player.TypeEvent.Let)
+    }
+    private void PlayerСollideWithLet(Collider collider)
+    {
+        if (Player.alive)
         {
-            if(Player.alive)
-            {
-
-                Player.alive = false;
-                UnSubscribePlatformOnCheckSwipe();
-                Player.DetectEvent -= PlayerСollisionWithPlatform;
-                GameObject.Find("Concentration").GetComponent<Concentration>().ResetLevelConcentration();
-                GameManager.ChangeGamePlayState(GameManager.GamePlayState.Gameover);
-                MultiplierTimer.StopTimer();
-                gameOver = collider;
-            }
-            
-        }
-        else
-        if (type == Player.TypeEvent.Ground)
-        {
-            
-            if (collider.transform.parent.GetComponent<Platform>().countPlayerTouches == 3)
-            {
-                platforms.Remove(collider.transform.parent.gameObject);
-                collider.transform.parent.GetComponent<Platform>().UnSubscribePlatformOnCheckSwipe();
-                collider.transform.parent.GetComponent<Platform>().BreakDownPlatform();
-                GeneratePlatform();
-            }
+            Player.alive = false;
+            UnSubscribePlatformOnCheckSwipe();
+            Player.DetectEvent -= PlayerСollisionWithPlatform;
+            GameObject.Find("Concentration").GetComponent<Concentration>().ResetLevelConcentration();
+            GameManager.ChangeGamePlayState(GameManager.GamePlayState.Gameover);
+            MultiplierTimer.StopTimer();
+            gameOver = collider;
         }
     }
+    private void PlayerСollideWithAbyss(Collider collider)
+    {
+        if (collider.tag == "Ground" || collider.tag == "Let")
+            collider.transform.parent.GetComponent<Platform>().ChangeGroundColor(2);
+
+        platforms.Remove(collider.transform.parent.gameObject);
+        collider.transform.parent.GetComponent<Platform>().UnSubscribePlatformOnCheckSwipe();
+        collider.transform.parent.GetComponent<Platform>().BreakDownPlatform();
+
+        GeneratePlatform();
+    }
+
 
     public void IncreaseSpeedPlatforms(bool increaseSpeed)
     {
@@ -154,7 +152,6 @@ public class Pipe : MonoBehaviour
         foreach (GameObject t in platforms)
             t.transform.GetComponent<Platform>().ChangeSpeedPlatform(speedPlatforms);
     }
-
     public void ChangeSpeedPlatforms(int speed)
     {
         foreach (GameObject t in platforms)

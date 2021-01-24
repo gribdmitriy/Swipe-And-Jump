@@ -19,24 +19,24 @@ public class Concentration : MonoBehaviour
         Player.DetectEvent += PlayerСollisionWithPlatform;
     }
 
-    private void PlayerСollisionWithPlatform(Player.TypeEvent type, Collider collider)
+    private void PlayerСollisionWithPlatform(SegmentType type, Collider collider)
     {
         
         if (state == State.Disabled)
         {
-            if (type == Player.TypeEvent.Abyss)
+            if (type == SegmentType.Abyss)
             {
                 if (collider.tag != "Ground" && collider.tag != "Let")
                     IncreaseLevelConcentration();
 
             }
             else
-            if (type == Player.TypeEvent.Let)
+            if (type == SegmentType.Let)
             {
                 ResetLevelConcentration();
             }
             else
-            if (type == Player.TypeEvent.Ground)
+            if (type == SegmentType.Ground)
             {
                 ResetLevelConcentration();
             }
@@ -44,12 +44,12 @@ public class Concentration : MonoBehaviour
         else
         {
 
-            if (type == Player.TypeEvent.Let)
+            if (type == SegmentType.Let)
             {
                 ResetLevelConcentration();
             }
             else
-            if (type == Player.TypeEvent.Ground)
+            if (type == SegmentType.Ground)
             {
                 if(sd)
                 {

@@ -50,21 +50,21 @@ public class Platform : PoolObject
         UnSubscribePlatformOnCheckSwipe();
     }
 
-    public void ConstructPlatform(List<string> pattern)
+    public void ConstructPlatform(List<SegmentType> pattern)
     {
         Vector3 position = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
 
         for (int i = 0; i < segmentsAmount; i++)
         {
-            switch(pattern[i])
+            switch (pattern[i])
             {
-                case "Ground":
+                case SegmentType.Ground:
                     segments[i] = PoolManager.GetObject("Ground", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
                     break;
-                case "Let":
+                case SegmentType.Let:
                     segments[i] = PoolManager.GetObject("Let", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
                     break;
-                case "Abyss":
+                case SegmentType.Abyss:
                     segments[i] = PoolManager.GetObject("Abyss", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
                     break;
             }
@@ -74,12 +74,12 @@ public class Platform : PoolObject
             segments[i].GetComponent<Segment>().ConstructMesh();
         }
 
-        
-        
-        /*int rand1 = Random.Range(0, 4);
+
+
+        int rand1 = Random.Range(0, 4);
         int randomSegment = Random.Range(0, segmentsAmount);
 
-        if (rand1 <= 2) GameObject.Find("PowerUpsGenerator").GetComponent<PowerUpsGenerator>().GenerateRandomPowerUpBySegment(segments[randomSegment]);*/
+        if (rand1 <= 2) GameObject.Find("PowerUpsGenerator").GetComponent<PowerUpsGenerator>().GenerateRandomPowerUpBySegment(segments[randomSegment]);
     }
 
     public void ChangeGroundColor(int countTouch)
