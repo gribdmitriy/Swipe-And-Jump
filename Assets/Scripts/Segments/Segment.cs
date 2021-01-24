@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-public abstract class Segment : MonoBehaviour
+public abstract class Segment : PoolObject
 {
     private float radius;
     private int angle;
@@ -12,18 +12,21 @@ public abstract class Segment : MonoBehaviour
     public MeshFilter M_F => m_f;
     public MeshCollider M_C => m_c;
     public MeshRenderer M_R => m_r;
-    
+
+    private float thickness;
+
     void Awake()
     {
+        thickness = 0.4f;
         m_f = GetComponent<MeshFilter>();
         m_c = GetComponent<MeshCollider>();
         m_r = GetComponent<MeshRenderer>();
         mesh = new Mesh();
-        InitSegment();
     }
 
-    public void ConstructMesh(float thickness)
+    public void ConstructMesh()
     {
+        InitSegment();
         radius = transform.parent.gameObject.GetComponent<Platform>().radius;
         angle = transform.parent.gameObject.GetComponent<Platform>().angle;
 
@@ -87,11 +90,5 @@ public abstract class Segment : MonoBehaviour
     public void ChangeColor(Color color)
     {
         m_r.material.color = color;
-    }
-
-    private void FixedUpdate()
-    {
-        if (transform.position.y < -20)
-            Destroy(transform.parent.gameObject);
     }
 }

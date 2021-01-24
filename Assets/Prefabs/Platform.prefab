@@ -50,8 +50,21 @@ MonoBehaviour:
   - {r: 0.078097194, g: 0.22107513, b: 0.254717, a: 0}
   radius: 2.5
   segments: []
-  segmentDatabase: {fileID: 11400000, guid: 4310355c0f6b3ac40a85f8e4c2b0adc4, type: 2}
   speed: 8
   thickness: 0.4
   angle: 15
+  segmentsTypes:
+  - name: Ground
+    prefab: {fileID: 5606025417607234679, guid: a9e6bab22e81ffe4eb30b54f39536a05, type: 3}
+    min: 7
+    max: 10
+  - name: Let
+    prefab: {fileID: 5606025417607234679, guid: abd7f6a6780c1f14b9f6041ae4a33714, type: 3}
+    min: 2
+    max: 4
+  - name: Abyss
+    prefab: {fileID: 5606025417607234679, guid: 4ad3945c75756a808aeaa3b5ed4818f7, type: 3}
+    min: 4
+    max: 6
   countPlayerTouches: 0
+  segmentsAmount: 12

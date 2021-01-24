@@ -4,21 +4,24 @@ using System;
 
 public class Pipe : MonoBehaviour
 {
-    //public static ColorPack paletter;
     public Transform prefab;
-    
+
     private MeshRenderer m_r;
-    private List<Transform> platforms;
-    private Vector3[] spawnPoints;
+    private List<GameObject> platforms;
+    public Vector3[] spawnPoints;
     private float speedPlatforms;
 
     private void Awake()
-    { 
-        spawnPoints = new Vector3[6];
-        platforms = new List<Transform>();
-        m_r = GetComponent<MeshRenderer>();
-        //paletter = new ColorPack(40, 210);
+    {
+        
+    }
 
+    private void Start()
+    {
+        Player.DetectEvent += PlayerСollisionWithPlatform;
+        spawnPoints = new Vector3[6];
+        platforms = new List<GameObject>();
+        m_r = GetComponent<MeshRenderer>();
         InitPlatforms();
     }
 
@@ -26,136 +29,120 @@ public class Pipe : MonoBehaviour
     {
         for (int i = 0; i < spawnPoints.Length; i++)
             spawnPoints[i] = new Vector3(0, i * -3, 0);
-        
-        for(int i = 0; i < spawnPoints.Length; i++)
-            platforms.Add(Instantiate(prefab, spawnPoints[i], Quaternion.identity));
 
-        foreach (Transform t in platforms)
+        for (int i = 0; i < spawnPoints.Length; i++)
+            platforms.Add(PoolManager.GetObject(prefab.name, spawnPoints[i], Quaternion.identity));
+
+        string[] pattern = new string[12] { "Ground", "Let", "Ground", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Ground", "Ground", "Ground", "Ground" };
+
+        foreach (GameObject t in platforms)
+            t.transform.gameObject.GetComponent<Platform>().ConstructPlatform(pattern);
+
+        foreach (GameObject t in platforms)
             t.transform.SetParent(transform);
 
-        SubscribePlatforms();
+        SubscribePlatformOnCheckSwipe();
     }
 
     public void Reload()
     {
-        //paletter = new ColorPack(40, 210);
-
-        foreach (Transform t in platforms)
+        foreach (GameObject t in platforms)
         {
+            t.transform.gameObject.GetComponent<Platform>().ResetPlatform();
+            t.transform.gameObject.GetComponent<Platform>().UnSubscribePlatformOnCheckSwipe();
             t.transform.gameObject.GetComponent<Platform>().BreakDownPlatform();
-            t.transform.gameObject.GetComponent<Platform>().ClearParentTransform();
-            t.transform.gameObject.GetComponent<Platform>().DetachPlatform();
         }
 
         Player.alive = true;
         platforms.Clear();
         Platform.isFirstPlatform = true;
-        SubscribeDetectPlayer();
+        Player.DetectEvent += PlayerСollisionWithPlatform;
         InitPlatforms();
     }
 
-    private void Start()
+    public void SubscribePlatformOnCheckSwipe()
     {
-        SubscribeDetectPlayer();
+        platforms.ForEach(elem => elem.GetComponent<Platform>().SubscribePlatformOnCheckSwipe());
     }
 
-    public void SubscribeDetectPlayer()
+    public void UnSubscribePlatformOnCheckSwipe()
     {
-        Player.DetectEvent += PlayerСollisionWithPlatform;
-    }
-
-    public void SubscribePlatforms()
-    {
-        platforms.ForEach(elem => elem.gameObject.GetComponent<Platform>().SubscribePlatform());
-    }
-
-    public void UnsubscribePlatforms()
-    {
-        platforms.ForEach(elem => elem.gameObject.GetComponent<Platform>().DetachPlatform());
+        platforms.ForEach(elem => elem.GetComponent<Platform>().UnSubscribePlatformOnCheckSwipe());
     }
 
     private void PlayerСollisionWithPlatform(Player.TypeEvent type, Collider collider)
-    {   
-        if(type == Player.TypeEvent.Abyss)
+    {
+        if (type == Player.TypeEvent.Abyss)
         {
-            if(collider.tag == "Ground" || collider.tag == "Let")
-                collider.transform.parent.GetComponent<Platform>().ChangeColor(3);
-            
-            platforms.Remove(collider.transform.parent);
+            if (collider.tag == "Ground" || collider.tag == "Let")
+                collider.transform.parent.GetComponent<Platform>().ChangeGroundColor(2);
 
-            collider.transform.parent.GetComponent<Platform>().ClearParentTransform();
-            collider.transform.parent.GetComponent<Platform>().DetachPlatform();
+            platforms.Remove(collider.transform.parent.gameObject);
+            collider.transform.parent.GetComponent<Platform>().UnSubscribePlatformOnCheckSwipe();
             collider.transform.parent.GetComponent<Platform>().BreakDownPlatform();
-            
+
             GeneratePlatform();
         }
         else
-        if(type == Player.TypeEvent.Let)
+        if (type == Player.TypeEvent.Let)
         {
             Player.alive = false;
-            unSubscribePlatformsFromSwipeController();
+            UnSubscribePlatformOnCheckSwipe();
+            Player.DetectEvent -= PlayerСollisionWithPlatform;
             GameObject.Find("Concentration").GetComponent<Concentration>().ResetLevelConcentration();
             GameManager.ChangeGamePlayState(GameManager.GamePlayState.Gameover);
-            //Score.ResetScore();
             MultiplierTimer.StopTimer();
         }
         else
         if (type == Player.TypeEvent.Ground)
         {
-            collider.transform.parent.GetComponent<Platform>().ChangeColor(collider.transform.parent.GetComponent<Platform>().countPlayerTouches);
-            if (collider.transform.parent.GetComponent<Platform>().countPlayerTouches > 1)
+            
+            if (collider.transform.parent.GetComponent<Platform>().countPlayerTouches == 3)
             {
-                collider.transform.parent.GetComponent<Platform>().ChangeColor(3);
-                platforms.Remove(collider.transform.parent);
-                collider.transform.parent.GetComponent<Platform>().ClearParentTransform();
-                collider.transform.parent.GetComponent<Platform>().DetachPlatform();
-
+                platforms.Remove(collider.transform.parent.gameObject);
+                collider.transform.parent.GetComponent<Platform>().UnSubscribePlatformOnCheckSwipe();
                 collider.transform.parent.GetComponent<Platform>().BreakDownPlatform();
-                
                 GeneratePlatform();
             }
         }
     }
 
-    public void ChangeSpeedPlatforms(bool increaseSpeed)
+    public void IncreaseSpeedPlatforms(bool increaseSpeed)
     {
         if (increaseSpeed && speedPlatforms < 15)
             speedPlatforms += 1.5f;
-        else if(!increaseSpeed)
+        else if (!increaseSpeed)
             speedPlatforms = 8f;
-        
-        foreach (Transform t in platforms)
-            t.transform.gameObject.GetComponent<Platform>().ChangeSpeedPlatform(speedPlatforms);
+
+        foreach (GameObject t in platforms)
+            t.transform.GetComponent<Platform>().ChangeSpeedPlatform(speedPlatforms);
     }
 
     public void ChangeSpeedPlatforms(int speed)
     {
-        foreach (Transform t in platforms)
-            t.transform.gameObject.GetComponent<Platform>().ChangeSpeedPlatform(speed);
+        foreach (GameObject t in platforms)
+            t.transform.GetComponent<Platform>().ChangeSpeedPlatform(speed);
     }
 
     public void GeneratePlatform()
     {
-        Vector3 positionForNewPlatform = new Vector3(0, platforms[platforms.Count - 1].transform.position.y - 3, 0);
-        Transform platform = Instantiate(prefab, positionForNewPlatform, Quaternion.identity);
-        platform.transform.SetParent(transform);
-        platforms.Add(platform);
+        Vector3 platformPosition = new Vector3(0, platforms[platforms.Count - 1].transform.position.y - 3, 0);
+        platforms.Add(PoolManager.GetObject(prefab.name, platformPosition, Quaternion.identity));
+
+        platforms[platforms.Count - 1].GetComponent<Platform>().ResetPlatform();
+        string[] pattern = new string[12] { "Ground", "Let", "Ground", "Ground", "Ground", "Abyss", "Abyss", "Abyss", "Ground", "Ground", "Ground", "Ground" };
+
+        platforms[platforms.Count - 1].GetComponent<Platform>().ConstructPlatform(pattern);
+        platforms[platforms.Count - 1].transform.SetParent(transform);
+        platforms[platforms.Count - 1].GetComponent<Platform>().SubscribePlatformOnCheckSwipe();
         platforms[platforms.Count - 1].GetComponent<Platform>().ChangeSpeedPlatform(speedPlatforms);
-        platforms[platforms.Count - 1].GetComponent<Platform>().SubscribePlatform();
 
         int i = 0;
-        foreach (Transform t in platforms)
+        foreach (GameObject t in platforms)
         {
             t.transform.gameObject.GetComponent<Platform>().SetPoint(spawnPoints[i]);
             i++;
         }
-    }
 
-    public void unSubscribePlatformsFromSwipeController()
-    {
-        foreach (Transform t in platforms)
-            t.transform.gameObject.GetComponent<Platform>().DetachPlatform();
-        
-        Player.DetectEvent -= PlayerСollisionWithPlatform;
     }
 }

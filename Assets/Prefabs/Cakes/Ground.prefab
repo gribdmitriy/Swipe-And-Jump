@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5606025417607234680}
   - component: {fileID: 5606025417607234682}
   - component: {fileID: 3227914059797935599}
+  - component: {fileID: 717733912969859429}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Ground
@@ -109,3 +110,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0e934b831f05cd40bb20abf05a461c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &717733912969859429
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5606025417607234679}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

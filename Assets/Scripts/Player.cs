@@ -136,6 +136,7 @@ public class Player : MonoBehaviour
 
                         AccelerationEffect.ResetTrails();
 
+                        hit.collider.gameObject.GetComponent<Ground>().PlayerTouch();
                         if (untouchablePlatformCount >= 3)
                         {
                             DetectEvent(TypeEvent.Abyss, hit.collider);
@@ -147,9 +148,9 @@ public class Player : MonoBehaviour
                             DetectEvent(TypeEvent.Ground, hit.collider);
                         }
 
-                        hit.collider.gameObject.GetComponent<Ground>().PlayerTouch();
+                        
                         GameObject.Find("Camera").GetComponent<CameraController>().ChangeReset();
-                        pipe.ChangeSpeedPlatforms(false);
+                        pipe.IncreaseSpeedPlatforms(false);
                         untouchablePlatformCount = 0;
                     }
 
@@ -177,7 +178,7 @@ public class Player : MonoBehaviour
                         GameObject.Find("Camera").GetComponent<CameraController>().ChangeReset();
                         untouchablePlatformCount = 0;
                         AccelerationEffect.ResetTrails();
-                        pipe.ChangeSpeedPlatforms(false);
+                        pipe.IncreaseSpeedPlatforms(false);
                     }
 
                     if (hit.collider.tag == "Abyss")
@@ -200,14 +201,14 @@ public class Player : MonoBehaviour
 
                         if (untouchablePlatformCount > 3)
                         {
-                            pipe.ChangeSpeedPlatforms(true);
+                            pipe.IncreaseSpeedPlatforms(true);
                             currentGainToScore = 3;
                             
                         }
 
                         if (untouchablePlatformCount > 5)
                         {
-                            pipe.ChangeSpeedPlatforms(true);
+                            pipe.IncreaseSpeedPlatforms(true);
                             currentGainToScore = 5;
                         }
                         Trail.ShowTrail();

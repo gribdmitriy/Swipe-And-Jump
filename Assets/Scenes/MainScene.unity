@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 61600402}
   - component: {fileID: 61600401}
   - component: {fileID: 61600404}
+  - component: {fileID: 61600400}
   m_Layer: 0
   m_Name: Pipe
   m_TagString: Untagged
@@ -352,6 +353,31 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4
   m_IsActive: 1
+--- !u!114 &61600400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 61600399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c26145ba298f6245974913327ac5d3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - name: Ground
+    prefab: {fileID: 3227914059797935599, guid: a9e6bab22e81ffe4eb30b54f39536a05, type: 3}
+    count: 150
+  - name: Let
+    prefab: {fileID: 6177179985967250308, guid: abd7f6a6780c1f14b9f6041ae4a33714, type: 3}
+    count: 70
+  - name: Abyss
+    prefab: {fileID: 4699782777019246507, guid: 4ad3945c75756a808aeaa3b5ed4818f7, type: 3}
+    count: 50
+  - name: Platform
+    prefab: {fileID: 3371116420495762236, guid: c4fcc170a1a38a53a8eeb0bfb413b90a, type: 3}
+    count: 15
 --- !u!23 &61600401
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -428,6 +454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 3371116420495762239, guid: c4fcc170a1a38a53a8eeb0bfb413b90a, type: 3}
+  spawnPoints: []
 --- !u!1 &68886421
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,14 +491,12 @@ MonoBehaviour:
     - {r: 0.15098791, g: 0.39917552, b: 0.8207547, a: 0}
     - {r: 0.13777146, g: 0.33843532, b: 0.6792453, a: 0}
     - {r: 0.112896055, g: 0.2768751, b: 0.5566038, a: 0}
-    - {r: 0.08610716, g: 0.21189202, b: 0.4245283, a: 0}
   - letColor: {r: 1, g: 0.25288212, b: 0, a: 0}
     groundColor: {r: 0.3284367, g: 0.15294118, b: 0.9254902, a: 0}
     touchColor:
     - {r: 0.28196174, g: 0.13082945, b: 0.7924528, a: 0}
     - {r: 0.24449567, g: 0.11690103, b: 0.6698113, a: 0}
     - {r: 0.19154641, g: 0.09545213, b: 0.5188679, a: 0}
-    - {r: 0.15060966, g: 0.076628685, b: 0.3962264, a: 0}
 --- !u!4 &68886423
 Transform:
   m_ObjectHideFlags: 0
@@ -8349,7 +8374,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
@@ -8366,7 +8391,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
   m_Name: 

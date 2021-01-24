@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using System.Linq;
-
+/*
 [CreateAssetMenu(fileName = "SegmentDatabase", menuName = "ScriptableObjects/SegmentDatabase", order = 1)]
 public class SegmentDatabase : ScriptableObject
 {
@@ -24,11 +24,11 @@ public class SegmentDatabase : ScriptableObject
     public GameObject[] GetFirstPlatform()
     {
         GameObject[] segments = new GameObject[segmentsAmount];
-        int positionToSpawnAbyss = segmentsAmount / 2;
         for (int i = 1; i <= segmentsAmount; i++)
         {
             segments[i - 1] = segmentsTypes[0].Prefab;
         }
+
         return segments;
     }
 
@@ -86,7 +86,7 @@ public class SegmentData
     public GameObject Prefab => prefab;
     public int Min => min;
     public int Max => max;
-}
+}*/
 
 
 

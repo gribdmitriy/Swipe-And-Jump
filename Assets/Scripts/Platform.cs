@@ -3,7 +3,7 @@ using Random = UnityEngine.Random;
 using System.Collections.Generic;
 using System.Linq;
 
-public class Platform : MonoBehaviour
+public class Platform : PoolObject
 {
     [SerializeField] private Color[] touchColors;
 
@@ -11,7 +11,6 @@ public class Platform : MonoBehaviour
 
     public float radius;
     public GameObject[] segments;
-    public SegmentDatabase segmentDatabase;
     public float speed = 8F;
     public float thickness;
     public int angle;
@@ -21,59 +20,78 @@ public class Platform : MonoBehaviour
     private float startTime;
     private float journeyLength;
     public int countPlayerTouches;
-    //public bool detached;
+    [SerializeField] private int segmentsAmount;
 
     void Awake()
     {
-        //detached = false;
         countPlayerTouches = 0;
-        angle = 360 / segmentDatabase.SegmentsAmount;
-        InitPlatform();
+        angle = 360 / segmentsAmount;
+        segments = new GameObject[segmentsAmount];
     }
 
-    public void SubscribePlatform()
+    public void SubscribePlatformOnCheckSwipe()
     {
         SwipeController.SwipeEvent += CheckSwipe;
     }
 
-    public void DetachPlatform()
+    public void UnSubscribePlatformOnCheckSwipe()
     {
         SwipeController.SwipeEvent -= CheckSwipe;
-        //detached = true;
     }
 
-    public void InitPlatform()
+    public void ResetPlatform()
     {
-        if (isFirstPlatform)
-        {
-            segments = segmentDatabase.GetFirstPlatform();
-            isFirstPlatform = false;
-        }
-        else
-            segments = segmentDatabase.GetPlatform();
+        segments = new GameObject[segmentsAmount];
+        //transform.rotation = Quaternion.identity;
+    }
 
+    public override void ReturnToPool()
+    {
+        gameObject.transform.SetParent(GameObject.Find("Pool").transform);
+        gameObject.SetActive(false);
+        countPlayerTouches = 0;
+        segments = null;
+        UnSubscribePlatformOnCheckSwipe();
+    }
+
+    public void ConstructPlatform(string[] pattern)
+    {
         Vector3 position = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
 
-        for (int i = 1; i <= segmentDatabase.SegmentsAmount; i++)
+        for (int i = 0; i < segmentsAmount; i++)
         {
-            segments[i - 1] = Instantiate(segments[i - 1], position, Quaternion.AngleAxis(angle * i, Vector3.up), transform);
-            segments[i - 1].GetComponent<Segment>().ConstructMesh(thickness);
+            switch(pattern[i])
+            {
+                case "Ground":
+                    segments[i] = PoolManager.GetObject("Ground", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
+                    break;
+                case "Let":
+                    segments[i] = PoolManager.GetObject("Let", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
+                    break;
+                case "Abyss":
+                    segments[i] = PoolManager.GetObject("Abyss", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
+                    break;
+            }
+
+            segments[i].transform.SetParent(transform);
+            segments[i].GetComponent<Rigidbody>().isKinematic = true;
+            segments[i].GetComponent<Segment>().ConstructMesh();
         }
 
+        
+        /*
         int rand1 = Random.Range(0, 4);
-        int randomSegment = Random.Range(0, segmentDatabase.SegmentsAmount);
+        int randomSegment = Random.Range(0, segmentsAmount);
 
-        if (rand1 <= 2) GameObject.Find("PowerUpsGenerator").GetComponent<PowerUpsGenerator>().GenerateRandomPowerUpBySegment(segments[randomSegment]);
+        if (rand1 <= 2) GameObject.Find("PowerUpsGenerator").GetComponent<PowerUpsGenerator>().GenerateRandomPowerUpBySegment(segments[randomSegment]);*/
     }
 
-    public void ChangeColor(int countTouch)
+    public void ChangeGroundColor(int countTouch)
     {
-        Debug.Log(countTouch);
         List<GameObject> grounds = GetOnlyGroundSegments();
 
         foreach(var ground in grounds)
         {
-            
             ground.GetComponent<Segment>().ChangeColor(GameObject.Find("ThemeManager").GetComponent<ThemeManager>().TouchCountColor(countTouch));
         }
     }
@@ -111,6 +129,7 @@ public class Platform : MonoBehaviour
         {
             if (countPlayerTouches < 4)
             {
+                ChangeGroundColor(countPlayerTouches);
                 countPlayerTouches++;
                 if (countPlayerTouches == 2)
                 {
@@ -122,11 +141,6 @@ public class Platform : MonoBehaviour
                 BreakDownPlatform();
             }
         }
-    }
-
-    public void ClearParentTransform()
-    {
-        transform.parent = null;
     }
 
     private void Update() 
@@ -141,16 +155,13 @@ public class Platform : MonoBehaviour
 
     public void BreakDownPlatform()
     {
-        Rigidbody[] rb = new Rigidbody[segments.Length];
 
         for(int i = 0; i < segments.Length; i++)
         {
-            segments[i].gameObject.GetComponent<MeshCollider>().enabled = false;
-            rb[i] = segments[i].gameObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
+            segments[i].gameObject.GetComponent<Segment>().ReturnToPool();
         }
 
-        for(int i = 0; i < segments.Length; i++)
-            rb[i].AddForce(Random.Range(-10, 10), Random.Range(0, 10), Random.Range(2, 5), ForceMode.Impulse);
+        ReturnToPool();
     }
 
     private void CheckSwipe(SwipeController.SwipeType type, float delta)
