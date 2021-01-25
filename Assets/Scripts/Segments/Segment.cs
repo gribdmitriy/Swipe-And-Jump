@@ -3,16 +3,18 @@ using System;
 
 public abstract class Segment : PoolObject
 {
-    private float radius;
-    private int angle;
+    [HideInInspector] public SegmentItem activeItem;
+
+    private Mesh mesh;
     private MeshFilter m_f;
     private MeshCollider m_c;
     private MeshRenderer m_r;
-    private Mesh mesh;
     public MeshFilter M_F => m_f;
     public MeshCollider M_C => m_c;
     public MeshRenderer M_R => m_r;
 
+    private float radius;
+    private int angle;
     private float thickness;
 
     void Awake()
@@ -84,11 +86,38 @@ public abstract class Segment : PoolObject
         m_f.mesh = mesh;
         m_c.sharedMesh = mesh;
     }
-
     public abstract void InitSegment();
 
     public void ChangeColor(Color color)
     {
         m_r.material.color = color;
+    }
+    public void SpawnItem(SegmentItem item)
+    {
+        item.parentSegment = this;
+        item.transform.SetParent(transform);
+        item.transform.localPosition = new Vector3(
+            transform.localPosition.x + 0.5f,
+            transform.localPosition.y + 0.3f,
+            transform.localPosition.z + 1.85f
+            );
+
+        item.Init();
+
+        activeItem = item;
+    }
+
+    public override void ReturnToPool()
+    {
+        ResetItem();
+        base.ReturnToPool();
+    }
+    public void ResetItem()
+    {
+        if (activeItem != null)
+        {
+            activeItem.ReturnToPool();
+            activeItem = null;
+        }
     }
 }

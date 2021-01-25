@@ -38,7 +38,8 @@ public class Pipe : MonoBehaviour
             if(!startInit)
                 platforms[j].gameObject.GetComponent<Platform>().SetPoint(spawnPoints[j]);
 
-            t.transform.gameObject.GetComponent<Platform>().ConstructPlatform(GameObject.Find("PatternManager").GetComponent<PatternManager>().GetPattern());
+            t.transform.gameObject.GetComponent<Platform>()
+                .ConstructPlatform(GameObject.Find("PatternManager").GetComponent<PatternManager>().GetPattern());
             j++;
         }
             
@@ -161,7 +162,6 @@ public class Pipe : MonoBehaviour
     public void GeneratePlatform()
     {
         Vector3 platformPosition = new Vector3(0, platforms[platforms.Count - 1].transform.position.y - 3, 0);
-
 
         platforms.Add(PoolManager.GetObject(prefab.name, platformPosition, Quaternion.identity));
         platforms[platforms.Count - 1].GetComponent<Platform>().ResetPlatform();

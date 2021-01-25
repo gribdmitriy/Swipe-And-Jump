@@ -8,7 +8,7 @@ public class GameOverRestartButton : MonoBehaviour
     {
         GameObject.Find("Pipe").GetComponent<Pipe>().Reload();
         Score.ResetScore();
-        GameObject.Find("CoinsCounter").GetComponent<CoinsCounter>().ResetCounter();
+        GameObject.Find("GameManagers").GetComponent<CoinsCounter>().ResetCounter();
         GameManager.ChangeGamePlayState(GameManager.GamePlayState.Gameplay);
     }
 }

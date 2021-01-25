@@ -9,6 +9,6 @@ public class RestartButton : MonoBehaviour
         GameObject.Find("Pipe").GetComponent<Pipe>().Reload();
         GameManager.ChangeGamePlayState(GameManager.GamePlayState.Gameplay);
         Score.ResetScore();
-        GameObject.Find("CoinsCounter").GetComponent<CoinsCounter>().ResetCounter();
+        GameObject.Find("GameManagers").GetComponent<CoinsCounter>().ResetCounter();
     }
 }
