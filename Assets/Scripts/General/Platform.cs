@@ -18,6 +18,10 @@ public class Platform : PoolObject
     public int countPlayerTouches;
     [SerializeField] private int segmentsAmount;
 
+    [Header("powerups")]
+    [SerializeField] private int powerupTotalChance;
+    public List<ItemData> powerups;
+
     void Awake()
     {
         countPlayerTouches = 0;
@@ -25,16 +29,25 @@ public class Platform : PoolObject
         segments = new GameObject[segmentsAmount];
     }
 
+    private void Update()
+    {
+        if (isMoving)
+        {
+            float distCovered = (Time.time - startTime) * speed;
+            float fractionOfJourney = distCovered / journeyLength;
+            transform.position = Vector3.Lerp(startPoint, endPoint, fractionOfJourney);
+        }
+    }
+
+
     public void SubscribePlatformOnCheckSwipe()
     {
         SwipeController.SwipeEvent += CheckSwipe;
     }
-
     public void UnSubscribePlatformOnCheckSwipe()
     {
         SwipeController.SwipeEvent -= CheckSwipe;
     }
-
     public void ResetPlatform()
     {
         segments = new GameObject[segmentsAmount];
@@ -74,22 +87,7 @@ public class Platform : PoolObject
             segments[i].GetComponent<Segment>().ConstructMesh();
         }
 
-
-
-        int rand1 = Random.Range(0, 4);
-        int randomSegment = Random.Range(0, segmentsAmount);
-
-        if (rand1 <= 2) GameObject.Find("PowerUpsGenerator").GetComponent<PowerUpsGenerator>().GenerateRandomPowerUpBySegment(segments[randomSegment]);
-    }
-
-    public void ChangeGroundColor(int countTouch)
-    {
-        List<GameObject> grounds = GetOnlyGroundSegments();
-
-        foreach(var ground in grounds)
-        {
-            ground.GetComponent<Segment>().ChangeColor(GameObject.Find("ThemeManager").GetComponent<ThemeManager>().TouchCountColor(countTouch));
-        }
+        SetRandomItemToRandomSegment();
     }
 
     private List<GameObject> GetOnlyGroundSegments()
@@ -98,30 +96,23 @@ public class Platform : PoolObject
 
         for (int i = 0; i < transform.childCount; i++)
         {
-            if(transform.GetChild(i).gameObject.transform.tag == "Ground")
+            if (transform.GetChild(i).gameObject.transform.tag == "Ground")
                 grounds.Add(transform.GetChild(i).gameObject);
         }
 
         return grounds;
     }
 
-    public void ChangeSpeedPlatform(float s)
+    private void CheckSwipe(SwipeController.SwipeType type, float delta)
     {
-        speed = s;
+        if (type == SwipeController.SwipeType.LEFT)
+            gameObject.transform.Rotate(0, -delta, 0);
+        else
+            gameObject.transform.Rotate(0, delta, 0);
     }
-
-    public void SetPoint(Vector3 point)
-    {
-        endPoint = point;
-        startPoint = transform.position;
-        startTime = Time.time;
-        journeyLength = Vector3.Distance(startPoint, endPoint);
-        isMoving = true;
-    }
-
     public void PlayerTouch()
     {
-        if(GameManager.gs == GameManager.GlobalState.Game)
+        if (GameManager.gs == GameManager.GlobalState.Game)
         {
             if (countPlayerTouches < 4)
             {
@@ -139,16 +130,38 @@ public class Platform : PoolObject
         }
     }
 
-    private void Update() 
+    public void ChangeGroundColor(int countTouch)
     {
-        if(isMoving)
+        List<GameObject> grounds = GetOnlyGroundSegments();
+
+        foreach(var ground in grounds)
         {
-            float distCovered = (Time.time - startTime) * speed;
-            float fractionOfJourney = distCovered / journeyLength;
-            transform.position = Vector3.Lerp(startPoint, endPoint, fractionOfJourney);
+            ground.GetComponent<Segment>().ChangeColor(GameObject.Find("ThemeManager").GetComponent<ThemeManager>().TouchCountColor(countTouch));
         }
     }
+    public void ChangeSpeedPlatform(float s)
+    {
+        speed = s;
+    }
+    public void SetPoint(Vector3 point)
+    {
+        endPoint = point;
+        startPoint = transform.position;
+        startTime = Time.time;
+        journeyLength = Vector3.Distance(startPoint, endPoint);
+        isMoving = true;
+    }
 
+    public void SetRandomItemToRandomSegment()
+    {
+        PoolObject randomItem;
+        Segment randomSegment = segments[Random.Range(0, segmentsAmount)].GetComponent<Segment>();
+
+        if (ItemGenerator.GetRandomItemByTotalChance(powerups, powerupTotalChance, out randomItem))
+        {
+            randomSegment.SpawnItem(PoolManager.GetObject(randomItem.name, randomSegment.transform.position, Quaternion.identity).GetComponent<PoolObject>());
+        }
+    }
     public void BreakDownPlatform()
     {
 
@@ -158,13 +171,5 @@ public class Platform : PoolObject
         }
 
         ReturnToPool();
-    }
-
-    private void CheckSwipe(SwipeController.SwipeType type, float delta)
-    {
-        if(type == SwipeController.SwipeType.LEFT)
-            gameObject.transform.Rotate(0, -delta, 0);
-        else
-            gameObject.transform.Rotate(0, delta, 0);
     }
 }

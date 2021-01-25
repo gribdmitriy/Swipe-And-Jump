@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Coin : MonoBehaviour
+public class Coin : PoolObject
 {
     private void Update()
     {
@@ -13,7 +13,12 @@ public class Coin : MonoBehaviour
         {
             //PlayerStats.ChangeCoinsCount(PlayerStats.CoinsCount + 1);
             GameObject.Find("CoinsCounter").GetComponent<CoinsCounter>().AddOneCoin();
-            Destroy(gameObject);
+            transform.GetComponentInParent<Segment>().ResetItem();
         }
+    }
+
+    public override void ReturnToPool()
+    {
+        base.ReturnToPool();
     }
 }

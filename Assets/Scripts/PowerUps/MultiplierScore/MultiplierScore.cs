@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MultiplierScore : MonoBehaviour
+public class MultiplierScore : PoolObject
 {
     private AudioSource audio;
     public AudioClip pickUpSound;
@@ -19,10 +19,6 @@ public class MultiplierScore : MonoBehaviour
             gameObject.transform.Rotate(0, -delta, 0);
     }
 
-    private void OnDestroy()
-    {
-        SwipeController.SwipeEvent -= CheckSwipe;
-    }
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Player")
@@ -31,7 +27,13 @@ public class MultiplierScore : MonoBehaviour
             audio.Play();
             SwipeController.SwipeEvent -= CheckSwipe;
             MultiplierTimer.StartTimer();
-            Destroy(gameObject);
+            transform.GetComponentInParent<Segment>().ResetItem();
         }
+    }
+
+    public override void ReturnToPool()
+    {
+        SwipeController.SwipeEvent -= CheckSwipe;
+        base.ReturnToPool();
     }
 }

@@ -32,6 +32,9 @@ public class ThemeManager : MonoBehaviour
 
     public Color TouchCountColor(int count)
     {
-        return colorPacks[currentPack].TouchColor[count];
+        if (colorPacks[currentPack].TouchColor.Length > count)
+            return colorPacks[currentPack].TouchColor[count];
+        else
+            return Color.black;
     }
 }

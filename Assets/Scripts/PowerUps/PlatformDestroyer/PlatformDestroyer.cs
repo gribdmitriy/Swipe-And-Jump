@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformDestroyer : MonoBehaviour
+public class PlatformDestroyer : PoolObject
 {
     private void Start()
     {
@@ -18,19 +18,19 @@ public class PlatformDestroyer : MonoBehaviour
             gameObject.transform.Rotate(0, -delta, 0);
     }
 
-    private void OnDestroy()
-    {
-        SwipeController.SwipeEvent -= CheckSwipe;
-    }
-
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Player")
         {
-
             SwipeController.SwipeEvent -= CheckSwipe;
             GameObject.FindWithTag("Player").GetComponent<Player>().powerUpPlatrofmDestroyerIsActive = true;
-            Destroy(gameObject);
+            transform.GetComponentInParent<Segment>().ResetItem();
         }
+    }
+
+    public override void ReturnToPool()
+    {
+        SwipeController.SwipeEvent -= CheckSwipe;
+        base.ReturnToPool();
     }
 }
