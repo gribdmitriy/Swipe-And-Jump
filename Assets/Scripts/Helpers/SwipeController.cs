@@ -77,10 +77,10 @@ public class SwipeController : MonoBehaviour
         if(Player.alive)
         {
             if(swipeDelta.x < 0)
-                SwipeEvent(SwipeType.LEFT, (prevMousePosition.x - curMousePosition.x));
+                SwipeEvent(SwipeType.LEFT, (prevMousePosition.x - curMousePosition.x) * Time.fixedDeltaTime * 38);
                 
             if(swipeDelta.x > 0) 
-                SwipeEvent(SwipeType.RIGHT, (curMousePosition.x - prevMousePosition.x));  
+                SwipeEvent(SwipeType.RIGHT, (curMousePosition.x - prevMousePosition.x) * Time.fixedDeltaTime * 38);  
         }
         
         prevMousePosition = curMousePosition;  
