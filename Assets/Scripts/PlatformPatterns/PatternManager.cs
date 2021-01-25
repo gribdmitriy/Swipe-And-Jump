@@ -79,15 +79,24 @@ public class PatternManager : MonoBehaviour
 }
 
 [Serializable]
-public struct Set
+public class Set
 {
-    [SerializeField] private List<Pattern> patterns;
+    
+    [SerializeField] public List<Pattern> patterns;
     public List<Pattern> Patterns => patterns;
+
+    public Set()
+    {
+        patterns = new List<Pattern>();
+    }
 }
 
 [Serializable]
 public class Pattern
 {
-    [SerializeField] private List<SegmentType> segments;
+
+    [SerializeField] public List<SegmentType> segments;
     public List<SegmentType> Segments => segments;
+
+
 }
