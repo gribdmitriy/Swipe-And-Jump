@@ -18,7 +18,7 @@ public class AdvertisingUI : MonoBehaviour
         timerA.fillAmount -= 1 * (((Time.deltaTime / 5) * 100) / 100);
         if (timeLeft < 0)
         {
-            GameObject.Find("CoinsCounter").GetComponent<CoinsCounter>().TransferCoinsCountToGameovePanel();
+            GameObject.Find("GameManagers").GetComponent<CoinsCounter>().TransferCoinsCountToGameovePanel();
             GameObject.Find("ScoreGamePlay").GetComponent<Score>().TransferScoreToGameovePanel();
             GameManager.SwitchGameOver();
         }

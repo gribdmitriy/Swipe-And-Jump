@@ -3,7 +3,7 @@ using System;
 
 public abstract class Segment : PoolObject
 {
-    [HideInInspector] public PoolObject activeItem;
+    [HideInInspector] public SegmentItem activeItem;
 
     private Mesh mesh;
     private MeshFilter m_f;
@@ -87,18 +87,14 @@ public abstract class Segment : PoolObject
         m_c.sharedMesh = mesh;
     }
     public abstract void InitSegment();
-    public override void ReturnToPool()
-    {
-        ResetItem();
-        base.ReturnToPool();
-    }
 
     public void ChangeColor(Color color)
     {
         m_r.material.color = color;
     }
-    public void SpawnItem(PoolObject item)
+    public void SpawnItem(SegmentItem item)
     {
+        item.parentSegment = this;
         item.transform.SetParent(transform);
         item.transform.localPosition = new Vector3(
             transform.localPosition.x + 0.5f,
@@ -106,7 +102,15 @@ public abstract class Segment : PoolObject
             transform.localPosition.z + 1.85f
             );
 
+        item.Init();
+
         activeItem = item;
+    }
+
+    public override void ReturnToPool()
+    {
+        ResetItem();
+        base.ReturnToPool();
     }
     public void ResetItem()
     {

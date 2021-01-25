@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ItemGenerator
 {
-    public static bool GetRandomItemByTotalChance(List<ItemData> items, int totalChance, out PoolObject result)
+    public static bool GetRandomItemByTotalChance<T>(List<ItemData<T>> items, int totalChance, out T result)
     {
         int rand = Random.Range(0, totalChance);
         int currentChance = 0;
@@ -12,7 +12,7 @@ public class ItemGenerator
         {
             if (rand < currentChance + item.chance)
             {
-                result = item.gameObject;
+                result = item.item;
                 return true;
             }
             else
@@ -21,14 +21,14 @@ public class ItemGenerator
             }
         }
 
-        result = null;
+        result = default;
         return false;
     }
 }
 
 [System.Serializable]
-public class ItemData
+public class ItemData<T>
 {
-    public PoolObject gameObject;
+    public T item;
     public int chance;
 }

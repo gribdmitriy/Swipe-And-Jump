@@ -20,7 +20,7 @@ public class Platform : PoolObject
 
     [Header("powerups")]
     [SerializeField] private int powerupTotalChance;
-    public List<ItemData> powerups;
+    public List<ItemData<SegmentItem>> segmentItems;
 
     void Awake()
     {
@@ -154,12 +154,14 @@ public class Platform : PoolObject
 
     public void SetRandomItemToRandomSegment()
     {
-        PoolObject randomItem;
+        SegmentItem randomItem;
         Segment randomSegment = segments[Random.Range(0, segmentsAmount)].GetComponent<Segment>();
 
-        if (ItemGenerator.GetRandomItemByTotalChance(powerups, powerupTotalChance, out randomItem))
+        if (ItemGenerator.GetRandomItemByTotalChance(segmentItems, powerupTotalChance, out randomItem))
         {
-            randomSegment.SpawnItem(PoolManager.GetObject(randomItem.name, randomSegment.transform.position, Quaternion.identity).GetComponent<PoolObject>());
+            randomSegment.SpawnItem(
+                PoolManager.GetObject(randomItem.name, randomSegment.transform.position, Quaternion.identity)
+                .GetComponent<SegmentItem>());
         }
     }
     public void BreakDownPlatform()
