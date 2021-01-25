@@ -69,6 +69,7 @@ public class PatternManagerEditor : Editor
                                 if (GUILayout.Button("X", GUILayout.Width(30), GUILayout.Height(30)))
                                 {
                                     set.Patterns.Remove(pattern);
+                                    SetObjectDirty(pm.gameObject);
                                 }
                             }
 
@@ -92,6 +93,7 @@ public class PatternManagerEditor : Editor
                     if (GUILayout.Button("Remove set", GUILayout.Height(30)))
                     {
                         pm.Sets.Remove(set);
+                        SetObjectDirty(pm.gameObject);
                     }
                     EditorGUILayout.EndHorizontal();
                 }
