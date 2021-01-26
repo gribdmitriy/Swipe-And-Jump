@@ -56,18 +56,29 @@ public class Platform : PoolObject
 
         for (int i = 0; i < segmentsAmount; i++)
         {
-            switch (pattern[i])
+            try
             {
-                case SegmentType.Ground:
-                    segments[i] = PoolManager.GetObject("Ground", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
-                    break;
-                case SegmentType.Let:
-                    segments[i] = PoolManager.GetObject("Let", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
-                    break;
-                case SegmentType.Abyss:
-                    segments[i] = PoolManager.GetObject("Abyss", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
-                    break;
+                switch (pattern[i])
+                {
+                    case SegmentType.Ground:
+                        segments[i] = PoolManager.GetObject("Ground", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
+                        break;
+                    case SegmentType.Let:
+                        segments[i] = PoolManager.GetObject("Let", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
+                        break;
+                    case SegmentType.Abyss:
+                        segments[i] = PoolManager.GetObject("Abyss", position, Quaternion.AngleAxis(angle * (i), Vector3.up));
+                        break;
+                }
             }
+            catch
+            {
+                Debug.Log(i);
+                Debug.Log(pattern.Count);
+                Debug.Log(segments.Length);
+                Debug.Log(segmentsAmount);
+            }
+            
 
             segments[i].transform.SetParent(transform);
             segments[i].GetComponent<Rigidbody>().isKinematic = true;

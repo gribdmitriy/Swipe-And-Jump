@@ -94,9 +94,20 @@ public class Set
 [Serializable]
 public class Pattern
 {
-
     [SerializeField] public List<SegmentType> segments;
     public List<SegmentType> Segments => segments;
 
+    public Pattern()
+    {
 
+    }
+
+    public Pattern(SegmentType segmentType)
+    {
+        segments = new List<SegmentType>();
+        for (int i = 0; i < 12; i++)
+        {
+            segments.Add(segmentType);
+        }
+    }
 }
