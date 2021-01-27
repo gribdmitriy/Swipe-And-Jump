@@ -17,4 +17,12 @@ public static class CollectionsExtentions
 
         return false;
     }
+
+    public static void InitializeColletion<T>(this IList<T> collection, int count, T defaultElement)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            collection.Add(defaultElement);
+        }
+    }
 }
