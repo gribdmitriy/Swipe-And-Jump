@@ -8,6 +8,11 @@ public class GameManager : MonoBehaviour
 
     private static Dictionary<string, GameObject> MainMenu = new Dictionary<string, GameObject>();
     private static Dictionary<string, GameObject> Game = new Dictionary<string, GameObject>();
+    static GameObject x2UI;
+    private void Awake()
+    {
+        x2UI = GameObject.Find("X2UI");
+    }
 
     private void Start()
     {
@@ -118,6 +123,20 @@ public class GameManager : MonoBehaviour
         Game["Gameover"].GetComponent<Animator>().Play("ShowPanel");
         Game["Gameplay"].GetComponent<Animator>().Play("HideConcentration");
         Game["Advertising"].SetActive(false);
+    }
+
+    public static void DisableX2UI()
+    {
+        x2UI.GetComponent<X2UIController>().ResetUI();
+        x2UI.SetActive(false);
+    }
+
+    public static void PickUpX2()
+    {
+        x2UI.SetActive(true);
+        x2UI.GetComponent<X2UIController>().PickUpX2();
+        if(!x2UI.GetComponent<X2UIController>().isStarted) 
+            x2UI.GetComponent<X2UIController>().StartTimer();
     }
 
     public enum GlobalState

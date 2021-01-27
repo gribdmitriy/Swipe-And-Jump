@@ -20,7 +20,7 @@ public class MultiplierScore : SegmentItem
     {
         audio.clip = pickUpSound;
         audio.Play();
-        MultiplierTimer.StartTimer();
+        GameManager.PickUpX2();
     }
 
     public override void ReturnToPool()

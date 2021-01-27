@@ -107,7 +107,8 @@ public class Player : MonoBehaviour
                         Trail.ShowTrail();
                         pipe.ChangeSpeedPlatforms(15);
                         untouchablePlatformCount = 0;
-                        GainScore.changeGain(currentGainToScore * UIMultiplierScore.currentMultiplier * GameObject.Find("Concentration").GetComponent<Concentration>().Multiplier());
+
+                        GainScore.changeGain(currentGainToScore * X2UIController._multiplier * GameObject.Find("Concentration").GetComponent<Concentration>().Multiplier());
                         GameObject.Find("Camera").GetComponent<CameraController>().IncreaseTheEffectOfAcceleration();
                     }
 
@@ -119,7 +120,7 @@ public class Player : MonoBehaviour
                         DetectEvent(SegmentType.Abyss, hit.collider);
                         pipe.ChangeSpeedPlatforms(15);
                         untouchablePlatformCount = 0;
-                        GainScore.changeGain(currentGainToScore * UIMultiplierScore.currentMultiplier * GameObject.Find("Concentration").GetComponent<Concentration>().Multiplier());
+                        GainScore.changeGain(currentGainToScore * X2UIController._multiplier * GameObject.Find("Concentration").GetComponent<Concentration>().Multiplier());
                         GameObject.Find("Camera").GetComponent<CameraController>().IncreaseTheEffectOfAcceleration();
                     }
 
@@ -131,7 +132,7 @@ public class Player : MonoBehaviour
                         DetectEvent(SegmentType.Abyss, hit.collider);
                         pipe.ChangeSpeedPlatforms(15);
                         untouchablePlatformCount = 0;
-                        GainScore.changeGain(currentGainToScore * UIMultiplierScore.currentMultiplier * GameObject.Find("Concentration").GetComponent<Concentration>().Multiplier());
+                        GainScore.changeGain(currentGainToScore * X2UIController._multiplier * GameObject.Find("Concentration").GetComponent<Concentration>().Multiplier());
                         GameObject.Find("Camera").GetComponent<CameraController>().IncreaseTheEffectOfAcceleration();
                     }
                     audio.clip = mentronom;
@@ -227,7 +228,7 @@ public class Player : MonoBehaviour
                         }
                         Trail.ShowTrail();
                         DetectEvent(SegmentType.Abyss, hit.collider);
-                        GainScore.changeGain(currentGainToScore * UIMultiplierScore.currentMultiplier * GameObject.Find("Concentration").GetComponent<Concentration>().Multiplier());
+                        GainScore.changeGain(currentGainToScore * X2UIController._multiplier * GameObject.Find("Concentration").GetComponent<Concentration>().Multiplier());
                         if(Time.timeScale < 1.2f) Time.timeScale += 0.001f;
                         else { Debug.Log(Time.timeScale); }
                     }
