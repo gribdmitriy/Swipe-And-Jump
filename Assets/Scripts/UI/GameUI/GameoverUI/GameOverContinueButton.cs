@@ -4,10 +4,6 @@ using UnityEngine.UI;
 
 public class GameOverContinueButton : MonoBehaviour
 {
-    public float minimum = -1.0F;
-    public float maximum = 1.0F;
-
-    static float t = 0.0f;
 
     public Color additiveStartColor;
     public Color additiveEndColor;
@@ -15,11 +11,15 @@ public class GameOverContinueButton : MonoBehaviour
 
     private void Start()
     {
-        additiveImage.color = new Color(255, 0, 0, 255);
+        additiveImage.color = additiveEndColor;
+    }
+
+    private void Update()
+    {
+        additiveImage.color = Color.Lerp(additiveStartColor, additiveEndColor, Mathf.PingPong(Time.time, 2));
     }
 
    
-
     public void Click()
     {
         GameObject.Find("Pipe").GetComponent<Pipe>().Continue();
