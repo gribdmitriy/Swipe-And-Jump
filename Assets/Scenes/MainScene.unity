@@ -366,7 +366,7 @@ MonoBehaviour:
     prefab: {fileID: 3371116420495762236, guid: c4fcc170a1a38a53a8eeb0bfb413b90a, type: 3}
     count: 7
   - name: Coin
-    prefab: {fileID: 7315774220366302887, guid: 8ad1603191f01a94ea61b869feef1f43, type: 3}
+    prefab: {fileID: 7315774220366302887, guid: d17f5cc86c5ae474c925cef9d0a3ebfa, type: 3}
     count: 10
   - name: PlatformDestroyer
     prefab: {fileID: 3122210092167401845, guid: b6a472a174562cd40b41223b5a6c0890, type: 3}
@@ -12055,7 +12055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: a443666ba598fc641966ec7e2c49b544, type: 2}
   m_Color: {r: 0.8396226, g: 0.122774996, b: 0.122774996, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
