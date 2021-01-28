@@ -280,25 +280,25 @@ MonoBehaviour:
   pools:
   - name: Ground
     prefab: {fileID: 3227914059797935599, guid: a9e6bab22e81ffe4eb30b54f39536a05, type: 3}
-    count: 67
+    count: 150
   - name: Let
     prefab: {fileID: 6177179985967250308, guid: abd7f6a6780c1f14b9f6041ae4a33714, type: 3}
-    count: 33
+    count: 75
   - name: Abyss
     prefab: {fileID: 4699782777019246507, guid: 4ad3945c75756a808aeaa3b5ed4818f7, type: 3}
-    count: 20
+    count: 50
   - name: Platform
     prefab: {fileID: 3371116420495762236, guid: c4fcc170a1a38a53a8eeb0bfb413b90a, type: 3}
-    count: 7
+    count: 15
   - name: Coin
     prefab: {fileID: 7315774220366302887, guid: d17f5cc86c5ae474c925cef9d0a3ebfa, type: 3}
-    count: 10
+    count: 30
   - name: PlatformDestroyer
     prefab: {fileID: 3122210092167401845, guid: b6a472a174562cd40b41223b5a6c0890, type: 3}
-    count: 6
+    count: 15
   - name: x2
     prefab: {fileID: 1763388126605559450, guid: 5765a86440650f5449c03ec78d76aace, type: 3}
-    count: 6
+    count: 15
 --- !u!23 &61600401
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -376,6 +376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 3371116420495762239, guid: c4fcc170a1a38a53a8eeb0bfb413b90a, type: 3}
   spawnPoints: []
+  isPauseState: 0
 --- !u!1 &68886421
 GameObject:
   m_ObjectHideFlags: 0

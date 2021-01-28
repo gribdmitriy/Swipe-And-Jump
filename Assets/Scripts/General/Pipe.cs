@@ -12,6 +12,7 @@ public class Pipe : MonoBehaviour
     private bool startInit;
     private Collider gameOver;
     private List<string[]> patterns = new List<string[]>();
+    public bool isPauseState;
 
     private void Start()
     {
@@ -53,16 +54,19 @@ public class Pipe : MonoBehaviour
     {
         GameObject.Find("Concentration").GetComponent<Concentration>().ResetLevelConcentration();
         int i = 0;
+
         foreach (GameObject t in platforms)
         {
+            Debug.Log(i);
             t.transform.gameObject.GetComponent<Platform>().UnSubscribePlatformOnCheckSwipe();
-            t.transform.gameObject.GetComponent<Platform>().BreakDownPlatform();
+            t.transform.gameObject.GetComponent<Platform>().ResturnToPool2();
             i++;
         }
 
         Player.alive = true;
         platforms.Clear();
         Platform.isFirstPlatform = true;
+        Player.DetectEvent -= PlayerСollisionWithPlatform;
         Player.DetectEvent += PlayerСollisionWithPlatform;
         InitPlatforms();
     }
