@@ -22,6 +22,9 @@ public class Platform : PoolObject
     [SerializeField] private int powerupTotalChance;
     public List<ItemData<SegmentItem>> segmentItems;
 
+    private bool returned;
+
+
     void Awake()
     {
         countPlayerTouches = 0;
@@ -44,10 +47,12 @@ public class Platform : PoolObject
     {
         SwipeController.SwipeEvent += CheckSwipe;
     }
+
     public void UnSubscribePlatformOnCheckSwipe()
     {
         SwipeController.SwipeEvent -= CheckSwipe;
     }
+
     public void ResetPlatform()
     {
         segments = new GameObject[segmentsAmount];
@@ -65,6 +70,7 @@ public class Platform : PoolObject
 
     public void ConstructPlatform(List<SegmentType> pattern)
     {
+        returned = false;
         Vector3 position = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
 
         for (int i = 0; i < segmentsAmount; i++)
@@ -121,6 +127,7 @@ public class Platform : PoolObject
         else
             gameObject.transform.Rotate(0, delta, 0);
     }
+
     public void PlayerTouch()
     {
         if (GameManager.gs == GameManager.GlobalState.Game)
@@ -150,10 +157,12 @@ public class Platform : PoolObject
             ground.GetComponent<Segment>().ChangeColor(GameObject.Find("ThemeManager").GetComponent<ThemeManager>().TouchCountColor(countTouch));
         }
     }
+
     public void ChangeSpeedPlatform(float s)
     {
         speed = s;
     }
+
     public void SetPoint(Vector3 point)
     {
         endPoint = point;
@@ -175,11 +184,26 @@ public class Platform : PoolObject
                 .GetComponent<SegmentItem>());
         }
     }
+
     public void BreakDownPlatform()
     {
 
-        for(int i = 0; i < segments.Length; i++)
+
+        for (int i = 0; i < segments.Length; i++)
         {
+            segments[i].gameObject.GetComponent<MeshCollider>().enabled = false;
+            segments[i].gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            segments[i].gameObject.GetComponent<Rigidbody>().AddForce(Random.Range(-10, 10), Random.Range(0, 10), Random.Range(2, 5), ForceMode.Impulse);
+        }            
+    }
+
+
+    public void ResturnToPool2()
+    {
+        returned = true;
+        for (int i = 0; i < segments.Length; i++)
+        {
+            segments[i].gameObject.GetComponent<MeshCollider>().enabled = true;
             segments[i].gameObject.GetComponent<Segment>().ReturnToPool();
         }
 
