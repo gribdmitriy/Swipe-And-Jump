@@ -12,6 +12,8 @@ public class X2UIController : MonoBehaviour
 
     public bool isStarted;
 
+    public bool continueState;
+
     private void Start()
     {
         ResetUI();
@@ -24,12 +26,19 @@ public class X2UIController : MonoBehaviour
         StartCoroutine("Timer");
     }
 
+    public void PauseTimer()
+    {
+        isStarted = false;
+        StopCoroutine("Timer");
+    }
+
     IEnumerator Timer()
     {
         while(_timer > 0)
         {
             timer.text = _timer.ToString();
             _timer = _timer - 1;
+            
             yield return new WaitForSeconds(1f);
         }
 

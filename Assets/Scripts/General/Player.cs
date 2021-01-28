@@ -44,7 +44,11 @@ public class Player : MonoBehaviour
 
     public delegate void DetectPlayer(SegmentType typeEvent, Collider collider);
     public static event DetectPlayer DetectEvent;
-
+    GameObject x2UI;
+    private void Awake()
+    {
+        x2UI = GameObject.Find("X2UI");
+    }
     private void Start()
     {
         alive = true;
@@ -189,6 +193,7 @@ public class Player : MonoBehaviour
                             Trail.ShowTrail();
                             state = State.IDLE;
                             DetectEvent(SegmentType.Let, hit.collider);
+                            x2UI.GetComponent<X2UIController>().PauseTimer();
                         }
                         GameObject.Find("Camera").GetComponent<CameraController>().ChangeReset();
                         untouchablePlatformCount = 0;

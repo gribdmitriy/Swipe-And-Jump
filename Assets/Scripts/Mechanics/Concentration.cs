@@ -30,11 +30,11 @@ public class Concentration : MonoBehaviour
                     IncreaseLevelConcentration();
 
             }
-            else
-            if (type == SegmentType.Let)
-            {
-                ResetLevelConcentration();
-            }
+            //else
+            //if (type == SegmentType.Let)
+            //{
+            //    ResetLevelConcentration();
+            //}
             else
             if (type == SegmentType.Ground)
             {
@@ -44,11 +44,11 @@ public class Concentration : MonoBehaviour
         else
         {
 
-            if (type == SegmentType.Let)
-            {
-                ResetLevelConcentration();
-            }
-            else
+            //if (type == SegmentType.Let)
+            //{
+            //    ResetLevelConcentration();
+            //}
+            //else
             if (type == SegmentType.Ground)
             {
                 if(sd)

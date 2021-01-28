@@ -124,9 +124,7 @@ public class Pipe : MonoBehaviour
             Player.alive = false;
             UnSubscribePlatformOnCheckSwipe();
             Player.DetectEvent -= PlayerСollisionWithPlatform;
-            GameObject.Find("Concentration").GetComponent<Concentration>().ResetLevelConcentration();
             GameManager.ChangeGamePlayState(GameManager.GamePlayState.Gameover);
-            GameManager.DisableX2UI();
             gameOver = collider;
         }
     }

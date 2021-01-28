@@ -20,6 +20,8 @@ public class AdvertisingUI : MonoBehaviour
         {
             GameObject.Find("GameManagers").GetComponent<CoinsCounter>().TransferCoinsCountToGameovePanel();
             GameObject.Find("ScoreGamePlay").GetComponent<Score>().TransferScoreToGameovePanel();
+            GameManager.DisableX2UI();
+            GameObject.Find("Concentration").GetComponent<Concentration>().ResetLevelConcentration();
             GameManager.SwitchGameOver();
         }
     }
