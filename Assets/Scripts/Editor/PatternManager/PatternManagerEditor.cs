@@ -81,25 +81,59 @@ public class PatternManagerEditor : Editor
 
         if (EditorGUILayout.BeginFadeGroup(f))
         {
-            if (set.Patterns.Count > 0)
+            if (!set.options.isRandomSet)
             {
+                EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Is random set");
+                    set.options.isRandomSet = EditorGUILayout.Toggle(set.options.isRandomSet);
+                EditorGUILayout.EndHorizontal();
 
                 for (int j = 0; j < set.Patterns.Count; j++)
                 {
                     try
-                    {
+                    { 
                         showPatterns[i][j] = DrowPattern(set, set.Patterns[j], showPatterns[i][j], j, i); //f
                     }
                     catch
                     {
                         Debug.Log(showPatterns[i].Count);
-
                         Debug.Log(set.Patterns.Count);
                         Debug.Log(i);
                         Debug.Log(j);
                     }
                     
                 }
+            }
+            else
+            {
+                EditorGUILayout.BeginVertical("box");
+
+                EditorGUILayout.BeginHorizontal("box");
+                    GUILayout.Label("Is random set");
+                    set.options.isRandomSet = EditorGUILayout.Toggle(set.options.isRandomSet);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal("box");
+                    GUILayout.Label("Let");
+                    GUILayout.Label("min");
+                    pm.Sets[i].options.letMinCount = EditorGUILayout.IntField(pm.Sets[i].options.letMinCount);
+                    GUILayout.Label("max");
+                    pm.Sets[i].options.letMaxCount = EditorGUILayout.IntField(pm.Sets[i].options.letMaxCount);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal("box");
+                    GUILayout.Label("Abyss");
+                    GUILayout.Label("min");
+                    pm.Sets[i].options.abyssMinCount = EditorGUILayout.IntField(pm.Sets[i].options.abyssMinCount);
+                    GUILayout.Label("max");
+                    pm.Sets[i].options.abyssMaxCount = EditorGUILayout.IntField(pm.Sets[i].options.abyssMaxCount);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal("box");
+                    pm.Sets[i].options.countPatterns = EditorGUILayout.IntField("Count patterns", pm.Sets[i].options.countPatterns);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.EndVertical();
             }
 
             DrowFooter(set, i);

@@ -63,6 +63,8 @@ public class Pipe : MonoBehaviour
             i++;
         }
 
+        GameObject.Find("PatternManager").GetComponent<PatternManager>().GenerateRandomSets();
+
         Player.alive = true;
         platforms.Clear();
         Platform.isFirstPlatform = true;
