@@ -8374,7 +8374,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
@@ -8391,7 +8391,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
   m_Name: 
@@ -17141,11 +17141,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sets:
   - patterns:
-    - segments: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    - segments: 000000000000000000000000000000000000000000000000000000000000000000000000020000000200000000000000
+    - segments: 000000000000000000000000000000000000000000000000000000000000000002000000020000000000000000000000
+    options:
+      isRandomSet: 0
+      letMinCount: 0
+      letMaxCount: 0
+      abyssMinCount: 0
+      abyssMaxCount: 0
+      countPatterns: 0
   - patterns:
     - segments: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-    - segments: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-    - segments: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    options:
+      isRandomSet: 0
+      letMinCount: 2
+      letMaxCount: 4
+      abyssMinCount: 2
+      abyssMaxCount: 5
+      countPatterns: 6
 --- !u!4 &2001158615
 Transform:
   m_ObjectHideFlags: 0
