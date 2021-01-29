@@ -5,7 +5,6 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 
 [CustomEditor(typeof(PatternManager))]
-
 public class PatternManagerEditor : Editor
 {
     private PatternManager pm;
@@ -16,6 +15,7 @@ public class PatternManagerEditor : Editor
 
     public void OnEnable()
     {
+
         pm = (PatternManager)target;
         showSets.InitializeColletion(pm.Sets.Count, 0);
 
@@ -115,8 +115,19 @@ public class PatternManagerEditor : Editor
 
     public float DrowPattern(Set set, Pattern pattern, float f, int index, int k)
     {
+        EditorGUILayout.BeginHorizontal();
+
         if (GUILayout.Button("Pattern " + index, GUILayout.MaxWidth(1000), GUILayout.Height(15)))
             f = f == 0 ? 1 : 0;
+
+        if (GUILayout.Button("X", GUILayout.Width(30), GUILayout.Height(15)))
+        {
+            showPatterns[k].RemoveAt(index);
+            set.Patterns.Remove(pattern);
+            SetObjectDirty(pm.gameObject);
+        }
+
+        EditorGUILayout.EndHorizontal();
 
         if (EditorGUILayout.BeginFadeGroup(f))
         {
@@ -156,12 +167,6 @@ public class PatternManagerEditor : Editor
 
                 GUI.backgroundColor = previousColor;
 
-                if (GUILayout.Button("X", GUILayout.Width(30), GUILayout.Height(30)))
-                {
-                    showPatterns[k].RemoveAt(index);
-                    set.Patterns.Remove(pattern);
-                    SetObjectDirty(pm.gameObject);
-                }
             }
 
             EditorGUILayout.EndHorizontal();
