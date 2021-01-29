@@ -71,6 +71,18 @@ public class PatternManager : MonoBehaviour
         return currentPattern.Segments;
     }
 
+    public List<SegmentType> GetFirstPattern()
+    {
+        List<SegmentType> segments = new List<SegmentType>();
+
+        for(int i = 0; i < 12; i++)
+        {
+            segments.Add(SegmentType.Ground);
+        }
+
+        return segments;
+    }
+
     public void GenerateRandomSets()
     {
         foreach(Set set in sets)
@@ -82,7 +94,7 @@ public class PatternManager : MonoBehaviour
                     set.patterns.Clear();
                 }
 
-                //set.patterns = new List<Pattern>();
+                set.patterns = new List<Pattern>();
                 for (int i = 0; i < set.options.countPatterns; i++)
                 {
                     List<SegmentType> availableSegments = new List<SegmentType>();

@@ -39,8 +39,17 @@ public class Pipe : MonoBehaviour
             if(!startInit)
                 platforms[j].gameObject.GetComponent<Platform>().SetPoint(spawnPoints[j]);
 
-            t.transform.gameObject.GetComponent<Platform>()
-                .ConstructPlatform(GameObject.Find("PatternManager").GetComponent<PatternManager>().GetPattern());
+            if(j == 0)
+            {
+                t.transform.gameObject.GetComponent<Platform>()
+                    .ConstructPlatform(GameObject.Find("PatternManager").GetComponent<PatternManager>().GetFirstPattern());
+            }
+            else
+            {
+                t.transform.gameObject.GetComponent<Platform>()
+                    .ConstructPlatform(GameObject.Find("PatternManager").GetComponent<PatternManager>().GetPattern());
+            }
+            
             j++;
         }
             
@@ -63,7 +72,7 @@ public class Pipe : MonoBehaviour
             i++;
         }
 
-        GameObject.Find("PatternManager").GetComponent<PatternManager>().GenerateRandomSets();
+        //GameObject.Find("PatternManager").GetComponent<PatternManager>().GenerateRandomSets();
 
         Player.alive = true;
         platforms.Clear();
