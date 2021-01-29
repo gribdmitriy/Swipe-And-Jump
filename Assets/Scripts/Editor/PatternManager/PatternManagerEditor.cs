@@ -11,13 +11,22 @@ public class PatternManagerEditor : Editor
     private PatternManager pm;
     private float showList;
     private List<float> showSets = new List<float>();
+    private List<List<float>> showPatterns = new List<List<float>>();
     private bool show;
 
     public void OnEnable()
     {
         pm = (PatternManager)target;
-        showSets = new List<float>();
         showSets.InitializeColletion(pm.Sets.Count, 0);
+
+        for (int i = 0; i < pm.Sets.Count; i++)
+        {
+            showPatterns.Add(new List<float>());
+            for (int j = 0; j < pm.Sets[i].patterns.Count; j++)
+            {
+                showPatterns[i].Add(0);
+            }
+        }
     }
 
     public override void OnInspectorGUI()
@@ -50,6 +59,7 @@ public class PatternManagerEditor : Editor
                 showSets.Add(1);
                 Set temp = new Set();
                 pm.Sets.Add(temp);
+                showPatterns.Add(new List<float>() { 0 });
                 temp.patterns = new List<Pattern>();
                 pm.Sets[pm.Sets.Count - 1].patterns.Add(new Pattern(SegmentType.Ground));
             }
@@ -62,25 +72,37 @@ public class PatternManagerEditor : Editor
 
     public float DrowSet(Set set, float f, int i)
     {
+        int count = set.Patterns.Count;
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.BeginVertical("box");
 
         if (GUILayout.Button("Set " + i, GUILayout.MaxWidth(1000), GUILayout.Height(30)))
             f = f == 0 ? 1 : 0;
 
-   
-
         if (EditorGUILayout.BeginFadeGroup(f))
         {
             if (set.Patterns.Count > 0)
             {
+
                 for (int j = 0; j < set.Patterns.Count; j++)
                 {
-                    DrowPattern(set, set.Patterns[j]);
+                    try
+                    {
+                        showPatterns[i][j] = DrowPattern(set, set.Patterns[j], showPatterns[i][j], j, i); //f
+                    }
+                    catch
+                    {
+                        Debug.Log(showPatterns[i].Count);
+
+                        Debug.Log(set.Patterns.Count);
+                        Debug.Log(i);
+                        Debug.Log(j);
+                    }
+                    
                 }
             }
 
-            DrowFooter(set);
+            DrowFooter(set, i);
         }
 
         EditorGUILayout.EndFadeGroup();
@@ -91,55 +113,65 @@ public class PatternManagerEditor : Editor
         return f;
     }
 
-    public void DrowPattern(Set set, Pattern pattern)
+    public float DrowPattern(Set set, Pattern pattern, float f, int index, int k)
     {
-        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Pattern " + index, GUILayout.MaxWidth(1000), GUILayout.Height(15)))
+            f = f == 0 ? 1 : 0;
 
-        if (pattern.Segments.Count > 0)
+        if (EditorGUILayout.BeginFadeGroup(f))
         {
-            Color previousColor = GUI.backgroundColor;
+            EditorGUILayout.BeginHorizontal();
 
-            for (int i = 0; i < pattern.Segments.Count; i++)
+            if (pattern.Segments.Count > 0)
             {
-                switch (pattern.Segments[i])
+                Color previousColor = GUI.backgroundColor;
+
+                for (int i = 0; i < pattern.Segments.Count; i++)
                 {
-                    case SegmentType.Ground:
-                        GUI.backgroundColor = Color.cyan;
-                        if (GUILayout.Button(pattern.Segments[i].ToString().Substring(0, 2).ToUpper(), GUILayout.MaxWidth(100), GUILayout.MinWidth(5), GUILayout.Height(30)))
-                        {
-                            pattern.Segments[i] = SegmentType.Let;
-                        }
-                        break;
-                    case SegmentType.Let:
-                        GUI.backgroundColor = Color.red;
-                        if (GUILayout.Button(pattern.Segments[i].ToString().Substring(0, 2).ToUpper(), GUILayout.MaxWidth(100), GUILayout.MinWidth(5), GUILayout.Height(30)))
-                        {
-                            pattern.Segments[i] = SegmentType.Abyss;
-                        }
-                        break;
-                    case SegmentType.Abyss:
-                        GUI.backgroundColor = Color.blue;
-                        if (GUILayout.Button(pattern.Segments[i].ToString().Substring(0, 2).ToUpper(), GUILayout.MaxWidth(100), GUILayout.MinWidth(5), GUILayout.Height(30)))
-                        {
-                            pattern.Segments[i] = SegmentType.Ground;
-                        }
-                        break;
+                    switch (pattern.Segments[i])
+                    {
+                        case SegmentType.Ground:
+                            GUI.backgroundColor = Color.cyan;
+                            if (GUILayout.Button(pattern.Segments[i].ToString().Substring(0, 2).ToUpper(), GUILayout.MaxWidth(100), GUILayout.MinWidth(5), GUILayout.Height(30)))
+                            {
+                                pattern.Segments[i] = SegmentType.Let;
+                            }
+                            break;
+                        case SegmentType.Let:
+                            GUI.backgroundColor = Color.red;
+                            if (GUILayout.Button(pattern.Segments[i].ToString().Substring(0, 2).ToUpper(), GUILayout.MaxWidth(100), GUILayout.MinWidth(5), GUILayout.Height(30)))
+                            {
+                                pattern.Segments[i] = SegmentType.Abyss;
+                            }
+                            break;
+                        case SegmentType.Abyss:
+                            GUI.backgroundColor = Color.blue;
+                            if (GUILayout.Button(pattern.Segments[i].ToString().Substring(0, 2).ToUpper(), GUILayout.MaxWidth(100), GUILayout.MinWidth(5), GUILayout.Height(30)))
+                            {
+                                pattern.Segments[i] = SegmentType.Ground;
+                            }
+                            break;
+                    }
+                }
+
+                GUI.backgroundColor = previousColor;
+
+                if (GUILayout.Button("X", GUILayout.Width(30), GUILayout.Height(30)))
+                {
+                    showPatterns[k].RemoveAt(index);
+                    set.Patterns.Remove(pattern);
+                    SetObjectDirty(pm.gameObject);
                 }
             }
 
-            GUI.backgroundColor = previousColor;
-
-            if (GUILayout.Button("X", GUILayout.Width(30), GUILayout.Height(30)))
-            {
-                set.Patterns.Remove(pattern);
-                SetObjectDirty(pm.gameObject);
-            }
+            EditorGUILayout.EndHorizontal();
         }
+        EditorGUILayout.EndFadeGroup();
 
-        EditorGUILayout.EndHorizontal();
+        return f;
     }
 
-    public void DrowFooter(Set set)
+    public void DrowFooter(Set set, int j)
     {
         EditorGUILayout.BeginHorizontal();
 
@@ -153,11 +185,13 @@ public class PatternManagerEditor : Editor
                 temp.segments.Add(SegmentType.Ground);
             }
 
+            showPatterns[j].Add(0);
             set.Patterns.Add(temp);
         }
 
         if (GUILayout.Button("Remove set", GUILayout.Height(30)))
         {
+            showPatterns.Remove(showPatterns[j]);
             pm.Sets.Remove(set);
             SetObjectDirty(pm.gameObject);
         }
