@@ -5,13 +5,26 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GlobalState gs;
-
+    private Text GlobalCoinsCount;
     private static Dictionary<string, GameObject> MainMenu = new Dictionary<string, GameObject>();
     private static Dictionary<string, GameObject> Game = new Dictionary<string, GameObject>();
     static GameObject x2UI;
+
     private void Awake()
     {
         x2UI = GameObject.Find("X2UI");
+        GlobalCoinsCount = GameObject.Find("GlobalCoinsCount").GetComponent<Text>();
+        if (!PlayerPrefs.HasKey("coins"))
+        {
+            PlayerPrefs.SetInt("coins", 0);
+        }
+
+        if(!PlayerPrefs.HasKey("bestScore"))
+        {
+            PlayerPrefs.SetInt("bestScore", 0);
+        }
+
+        GlobalCoinsCount.text = System.Convert.ToString(PlayerPrefs.GetInt("coins"));
     }
 
     private void Start()
