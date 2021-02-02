@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SegmentItem : UpgradableItem
+public abstract class SegmentItem : PoolObject
 {
     public Segment parentSegment;
 
