@@ -280,25 +280,25 @@ MonoBehaviour:
   pools:
   - name: Ground
     prefab: {fileID: 3227914059797935599, guid: a9e6bab22e81ffe4eb30b54f39536a05, type: 3}
-    count: 100
+    count: 115
   - name: Let
     prefab: {fileID: 6177179985967250308, guid: abd7f6a6780c1f14b9f6041ae4a33714, type: 3}
-    count: 50
+    count: 65
   - name: Abyss
     prefab: {fileID: 4699782777019246507, guid: 4ad3945c75756a808aeaa3b5ed4818f7, type: 3}
-    count: 35
+    count: 45
   - name: Platform
     prefab: {fileID: 3371116420495762236, guid: c4fcc170a1a38a53a8eeb0bfb413b90a, type: 3}
     count: 15
   - name: Coin
     prefab: {fileID: 7315774220366302887, guid: d17f5cc86c5ae474c925cef9d0a3ebfa, type: 3}
-    count: 10
+    count: 15
   - name: PlatformDestroyer
     prefab: {fileID: 3122210092167401845, guid: b6a472a174562cd40b41223b5a6c0890, type: 3}
-    count: 6
+    count: 10
   - name: x2
     prefab: {fileID: 1763388126605559450, guid: 5765a86440650f5449c03ec78d76aace, type: 3}
-    count: 6
+    count: 10
 --- !u!23 &61600401
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -407,18 +407,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorPacks:
-  - letColor: {r: 1, g: 0.52665436, b: 0.043137252, a: 0}
-    groundColor: {r: 0.23429158, g: 0.43063536, b: 0.764151, a: 0}
+  - letColor: {r: 1, g: 0.35442418, b: 0, a: 0}
+    groundColor: {r: 0, g: 0.29680824, b: 1, a: 0}
     touchColor:
     - {r: 0.15098791, g: 0.39917552, b: 0.8207547, a: 0}
     - {r: 0.13777146, g: 0.33843532, b: 0.6792453, a: 0}
     - {r: 0.112896055, g: 0.2768751, b: 0.5566038, a: 0}
-  - letColor: {r: 0.9215687, g: 0.4039216, b: 0.019607844, a: 0}
-    groundColor: {r: 0.5137255, g: 0.26666668, b: 0.87843144, a: 0}
+  - letColor: {r: 0.92156863, g: 0.1597023, b: 0.01960784, a: 0}
+    groundColor: {r: 0.34555674, g: 0, b: 1, a: 0}
     touchColor:
-    - {r: 0.4246345, g: 0.22659309, b: 0.7169812, a: 0}
-    - {r: 0.32262373, g: 0.17292629, b: 0.5471698, a: 0}
-    - {r: 0.21239585, g: 0.11667854, b: 0.3584906, a: 0}
+    - {r: 0.25719568, g: 0, b: 0.745283, a: 0}
+    - {r: 0.17368412, g: 0, b: 0.5, a: 0}
+    - {r: 0.11025943, g: 0, b: 0.3207547, a: 0}
 --- !u!4 &68886423
 Transform:
   m_ObjectHideFlags: 0
@@ -10990,6 +10990,81 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &989353764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 989353765}
+  - component: {fileID: 989353767}
+  - component: {fileID: 989353766}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &989353765
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989353764}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1957812764}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &989353766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989353764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.22545147, g: 0, b: 1, a: 0.078431375}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &989353767
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989353764}
+  m_CullTransparentMesh: 1
 --- !u!1 &1016024310
 GameObject:
   m_ObjectHideFlags: 0
@@ -17388,6 +17463,7 @@ RectTransform:
   m_Children:
   - {fileID: 439696143}
   - {fileID: 2073184740}
+  - {fileID: 989353765}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17593,6 +17669,15 @@ MonoBehaviour:
       abyssMinCount: 0
       abyssMaxCount: 0
       countPatterns: 0
+  - patterns:
+    - segments: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    options:
+      isRandomSet: 1
+      letMinCount: 2
+      letMaxCount: 4
+      abyssMinCount: 2
+      abyssMaxCount: 5
+      countPatterns: 15
 --- !u!4 &2001158615
 Transform:
   m_ObjectHideFlags: 0
