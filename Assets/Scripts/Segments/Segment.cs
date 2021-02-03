@@ -103,7 +103,6 @@ public abstract class Segment : PoolObject
             );
 
         item.Init();
-
         activeItem = item;
     }
 
@@ -118,6 +117,14 @@ public abstract class Segment : PoolObject
         {
             activeItem.ReturnToPool();
             activeItem = null;
+        }
+    }
+
+    private void Update()
+    {
+        if(transform.position.y < -30)
+        {
+            transform.parent.gameObject.GetComponent<Platform>().ResturnToPool2();
         }
     }
 }

@@ -6,7 +6,7 @@ public class Score : MonoBehaviour
 {
     public static int score = 0;
     private static Text text;
-    
+
     private void Start() 
     {
         text = GetComponent<Text>();

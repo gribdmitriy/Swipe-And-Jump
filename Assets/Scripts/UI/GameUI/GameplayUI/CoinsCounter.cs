@@ -17,6 +17,11 @@ public class CoinsCounter : MonoBehaviour
         text.text = "0";
     }
 
+    public int GetCoinsCount()
+    {
+        return Convert.ToInt32(text.text);
+    }
+
     public void AddOneCoin()
     {
         text.text = Convert.ToString(Convert.ToInt32(text.text) + 1);

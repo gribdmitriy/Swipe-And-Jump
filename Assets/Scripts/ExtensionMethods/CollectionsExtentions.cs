@@ -18,7 +18,7 @@ public static class CollectionsExtentions
         return false;
     }
 
-    public static void InitializeColletion<T>(this IList<T> collection, int count, T defaultElement)
+    public static void InitializeColletion<T>(this IList<T> collection, int count, T defaultElement, bool useAsPrototipe = true)
     {
         for (int i = 0; i < count; i++)
         {
