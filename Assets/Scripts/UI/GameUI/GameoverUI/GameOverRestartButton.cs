@@ -14,7 +14,6 @@ public class GameOverRestartButton : MonoBehaviour
         SessionCoinsCount = GameObject.Find("CoinsCounter").GetComponent<Text>();
     }
 
-
     public void Click()
     {
         GameObject.Find("Pipe").GetComponent<Pipe>().Reload();
