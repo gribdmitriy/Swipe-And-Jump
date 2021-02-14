@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af21eb6f28aa18e489815ae1c1d5c016, type: 3}
+  m_Name: Items Data
+  m_EditorClassIdentifier: 
+  totalChance: 200
+  items:
+  - name: 
+    prefab: {fileID: 0}
+    spawnChance: 0
+    stacksCap: 0
+    duration: 0
+    effectStrength: 0
+    upgrades:
+    - upgradeType: 0
+      upgradeValue: 0
+    constraints:
+    - constraint: 0
+      segmentType: 2
+  - name: 
+    prefab: {fileID: 0}
+    spawnChance: 0
+    stacksCap: 0
+    duration: 0
+    effectStrength: 0
+    upgrades: []
+    constraints: []
+  - name: 
+    prefab: {fileID: 0}
+    spawnChance: 0
+    stacksCap: 0
+    duration: 0
+    effectStrength: 0
+    upgrades: []
+    constraints: []
