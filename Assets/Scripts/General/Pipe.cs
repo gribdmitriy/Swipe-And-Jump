@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Pipe : MonoBehaviour
 {
-    public Transform prefab;
+    [SerializeField] private Transform prefab;
+    [SerializeField] private Vector3[] spawnPoints;
+    [SerializeField] private ItemsData itemsDatabase;
+
+    public bool isPauseState;
 
     private MeshRenderer m_r;
     private List<GameObject> platforms;
-    public Vector3[] spawnPoints;
     private float speedPlatforms;
     private bool startInit;
     private Collider gameOver;
     private List<string[]> patterns = new List<string[]>();
-    public bool isPauseState;
+
 
     private void Start()
     {
@@ -177,18 +181,65 @@ public class Pipe : MonoBehaviour
         Vector3 platformPosition = new Vector3(0, platforms[platforms.Count - 1].transform.position.y - 3, 0);
 
         platforms.Add(PoolManager.GetObject(prefab.name, platformPosition, Quaternion.identity));
-        platforms[platforms.Count - 1].GetComponent<Platform>().ResetPlatform();
+        Platform generatedPlatform = platforms[platforms.Count - 1].GetComponent<Platform>();
 
-        platforms[platforms.Count - 1].GetComponent<Platform>().ConstructPlatform(GameObject.Find("PatternManager").GetComponent<PatternManager>().GetPattern());
+        generatedPlatform.ResetPlatform();
+
+        generatedPlatform.ConstructPlatform(GameObject.Find("PatternManager").GetComponent<PatternManager>().GetPattern());
         platforms[platforms.Count - 1].transform.SetParent(transform);
-        platforms[platforms.Count - 1].GetComponent<Platform>().SubscribePlatformOnCheckSwipe();
-        platforms[platforms.Count - 1].GetComponent<Platform>().ChangeSpeedPlatform(speedPlatforms);
+        generatedPlatform.SubscribePlatformOnCheckSwipe();
+        generatedPlatform.ChangeSpeedPlatform(speedPlatforms);
         platforms[platforms.Count - 1].transform.rotation *= platforms[platforms.Count - 2].transform.rotation;
-        int i = 0;
-        foreach (GameObject t in platforms)
+
+        for (int i = 0; i < platforms.Count; i++)
         {
-            t.transform.gameObject.GetComponent<Platform>().SetPoint(spawnPoints[i]);
-            i++;
+            platforms[i].gameObject.GetComponent<Platform>().SetPoint(spawnPoints[i]);
         }
+
+        GenerateItems(generatedPlatform);
+    }
+
+    private void GenerateItems(Platform platform)
+    {
+        if (itemsDatabase.TryToGetRandomItem(out Item randomItem))
+        {
+            if (randomItem.constraints.IsNullOrEmpty())
+            {
+                platform.SetItemOnRandomSegment(randomItem.prefab);
+            }
+            else
+            {
+                List<SegmentType> possibleSegmentTypes = System.Enum.GetValues(typeof(SegmentType)).Cast<SegmentType>().ToList();
+
+                foreach (var constraint in randomItem.constraints)
+                {
+                    ManageConstraints(constraint, ref possibleSegmentTypes);
+                }
+
+                platform.SetItemOnSegmentByTypes(randomItem.prefab, possibleSegmentTypes.ToArray());
+            }
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="constraint"></param>
+    /// <param name="possibleSegmentTypes"></param>
+    /// <returns>Is can continue manage constraints</returns>
+    private bool ManageConstraints(Constraint constraint, ref List<SegmentType> possibleSegmentTypes)
+    {
+        switch (constraint.constraint)
+        {
+            case ConstraintType.DontSpawnsOn:
+                possibleSegmentTypes.Remove(constraint.segmentType);
+                return true;
+
+            case ConstraintType.SpawnsOnlyOn:
+                possibleSegmentTypes = new List<SegmentType>() { constraint.segmentType };
+                return false;
+        }
+
+        return true;
     }
 }

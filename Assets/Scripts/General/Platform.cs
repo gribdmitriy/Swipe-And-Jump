@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Platform : PoolObject
 {
@@ -104,7 +105,7 @@ public class Platform : PoolObject
             segments[i].GetComponent<Segment>().ConstructMesh();
         }
 
-        SetRandomItemToRandomSegment();
+        //SetRandomItemToRandomSegment();
     }
 
     private List<GameObject> GetOnlyGroundSegments()
@@ -127,7 +128,6 @@ public class Platform : PoolObject
         else
             gameObject.transform.Rotate(0, delta, 0);
     }
-
     public void PlayerTouch()
     {
         if (GameManager.gs == GameManager.GlobalState.Game)
@@ -157,7 +157,6 @@ public class Platform : PoolObject
             ground.GetComponent<Segment>().ChangeColor(GameObject.Find("ThemeManager").GetComponent<ThemeManager>().TouchCountColor(countTouch));
         }
     }
-
     public void ChangeSpeedPlatform(float s)
     {
         speed = s;
@@ -195,6 +194,36 @@ public class Platform : PoolObject
             segments[i].gameObject.GetComponent<Rigidbody>().isKinematic = false;
             segments[i].gameObject.GetComponent<Rigidbody>().AddForce(Random.Range(-10, 10), Random.Range(0, 10), Random.Range(2, 5), ForceMode.Impulse);
         }            
+    }
+
+
+    public void SetItemOnSegmentByTypes(SegmentItem item, params SegmentType[] types)
+    {
+        SegmentType randomType = types[Random.Range(0, types.Length)];
+        SetItemOnSegmentByType(item, randomType);
+    }
+    public void SetItemOnSegmentByType(SegmentItem item, SegmentType type)
+    {
+        List<int> appropriateSegmentTypeIndexes = segments
+            .Where(segment => segment.transform.tag == type.ToString())
+            .Select(segmentSelector => segments.ToList().IndexOf(segmentSelector)).ToList();
+
+        if (!appropriateSegmentTypeIndexes.IsNullOrEmpty())
+        {
+            int randomIndex = appropriateSegmentTypeIndexes[Random.Range(0, appropriateSegmentTypeIndexes.Count)];
+            SetItemOnSegment(item, randomIndex);
+        }
+    }
+    public void SetItemOnRandomSegment(SegmentItem item)
+    {
+        int randomIndex = segments.ToList().IndexOf(segments[Random.Range(0, segments.Length)]);
+        SetItemOnSegment(item, randomIndex);
+    }
+    public void SetItemOnSegment(SegmentItem item, int index)
+    {
+        segments[index].GetComponent<Segment>().SpawnItem(
+                PoolManager.GetObject(item.name, segments[index].transform.position, Quaternion.identity)
+                .GetComponent<SegmentItem>());
     }
 
 

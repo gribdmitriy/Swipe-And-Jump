@@ -376,6 +376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 3371116420495762239, guid: c4fcc170a1a38a53a8eeb0bfb413b90a, type: 3}
   spawnPoints: []
+  itemsDatabase: {fileID: 11400000, guid: 210b46dc23ed9d74c9ae973829b8276e, type: 2}
   isPauseState: 0
 --- !u!1 &68886421
 GameObject:
