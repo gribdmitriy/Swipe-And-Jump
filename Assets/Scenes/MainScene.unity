@@ -299,6 +299,9 @@ MonoBehaviour:
   - name: x2
     prefab: {fileID: 1763388126605559450, guid: 5765a86440650f5449c03ec78d76aace, type: 3}
     count: 10
+  - name: Shield
+    prefab: {fileID: 1763388126605559450, guid: f5f81ac8618e5c7458663d9b78ddd56f, type: 3}
+    count: 10
 --- !u!23 &61600401
 MeshRenderer:
   m_ObjectHideFlags: 0

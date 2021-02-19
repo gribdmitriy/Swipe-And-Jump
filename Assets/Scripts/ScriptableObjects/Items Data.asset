@@ -44,3 +44,13 @@ MonoBehaviour:
     constraints:
     - constraint: 0
       segmentType: 2
+  - name: Shield
+    prefab: {fileID: 0}
+    spawnChance: 8
+    stacksCap: 0
+    duration: 0
+    effectStrength: 0
+    upgrades: []
+    constraints:
+    - constraint: 0
+      segmentType: 2
