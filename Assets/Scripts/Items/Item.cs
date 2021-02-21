@@ -9,6 +9,7 @@ public enum ConstraintType { DontSpawnsOn, SpawnsOnlyOn }
 public class Item
 {
     public string name;
+    public bool canBeSpawned;
     public SegmentItem prefab;
 
     public int spawnChance;
@@ -16,11 +17,17 @@ public class Item
     public float duration;
     public float effectStrength;
 
+    public int currentUpgrade;
+
     public List<Upgrade> upgrades;
     public List<Constraint> constraints;
 
+
+
     public Item()
     {
+        canBeSpawned = true;
+        currentUpgrade = -1;
         upgrades = new List<Upgrade>();
         constraints = new List<Constraint>();
     }

@@ -15,41 +15,55 @@ MonoBehaviour:
   totalChance: 200
   items:
   - name: Coin
+    canBeSpawned: 1
     prefab: {fileID: 7315774220366302887, guid: 8ad1603191f01a94ea61b869feef1f43, type: 3}
-    spawnChance: 80
+    spawnChance: 0
     stacksCap: 0
     duration: 0
     effectStrength: 0
-    upgrades: []
+    currentUpgrade: 1
+    upgrades:
+    - upgradeType: 0
+      upgradeValue: 50
+    - upgradeType: 0
+      upgradeValue: 100
+    - upgradeType: 2
+      upgradeValue: 50
     constraints:
     - constraint: 1
       segmentType: 2
   - name: X2
+    canBeSpawned: 1
     prefab: {fileID: 1763388126605559450, guid: 5765a86440650f5449c03ec78d76aace, type: 3}
-    spawnChance: 40
+    spawnChance: 5
     stacksCap: 0
     duration: 0
     effectStrength: 0
+    currentUpgrade: 0
     upgrades: []
     constraints:
     - constraint: 0
       segmentType: 2
   - name: PlatformDestroyer
+    canBeSpawned: 1
     prefab: {fileID: 3122210092167401845, guid: b6a472a174562cd40b41223b5a6c0890, type: 3}
-    spawnChance: 40
+    spawnChance: 5
     stacksCap: 0
     duration: 0
     effectStrength: 0
+    currentUpgrade: 0
     upgrades: []
     constraints:
     - constraint: 0
       segmentType: 2
   - name: Shield
+    canBeSpawned: 1
     prefab: {fileID: 1763388126605559450, guid: f5f81ac8618e5c7458663d9b78ddd56f, type: 3}
-    spawnChance: 40
+    spawnChance: 5
     stacksCap: 0
     duration: 0
     effectStrength: 0
+    currentUpgrade: 0
     upgrades: []
     constraints:
     - constraint: 0

@@ -22,7 +22,13 @@ public class ItemsData : ScriptableObject
     public bool TryToGetRandomItem(out Item result)
     {
         return ItemGenerator.GetRandomItemByTotalChance(
-            items.Select(item => new ItemData<Item>() { item = item, chance = item.spawnChance }).ToList(),
+            items.Where(item => item.canBeSpawned).Select(canBeSpawnedItem => new ItemData<Item>() 
+            { 
+                item = canBeSpawnedItem, 
+                chance = canBeSpawnedItem.spawnChance +
+                canBeSpawnedItem.upgrades.Where((up, index) => index <= canBeSpawnedItem.currentUpgrade && up.upgradeType == UpgradeType.SpawnChance)
+                .Sum(chosenUp => (int)chosenUp.upgradeValue)
+            }).ToList(),
             totalChance,
             out result);
     }

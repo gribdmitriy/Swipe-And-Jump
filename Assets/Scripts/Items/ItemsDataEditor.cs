@@ -99,11 +99,14 @@ public class ItemsDataEditor : Editor
             DrawUpgrades(itemsDataTarget.items[i]);
             GUILayout.EndVertical();
 
-            GUILayout.Space(20);
-            GUILayout.BeginVertical();
-            DrawMenuHeader("constraints", new Color(0.8f, 0.6f, 0.45f) * 3f);
-            DrawConstraints(itemsDataTarget.items[i]);
-            GUILayout.EndVertical();
+            if (itemsDataTarget.items[i].canBeSpawned)
+            {
+                GUILayout.Space(20);
+                GUILayout.BeginVertical();
+                DrawMenuHeader("constraints", new Color(0.8f, 0.6f, 0.45f) * 3f);
+                DrawConstraints(itemsDataTarget.items[i]);
+                GUILayout.EndVertical();
+            }
 
 
             GUILayout.EndVertical();
@@ -113,18 +116,44 @@ public class ItemsDataEditor : Editor
 
     private void DrawItemGeneral(Item item)
     {
+        Color baseColor = GUI.backgroundColor;
+
         GUILayout.BeginHorizontal();
-        item.prefab = EditorGUILayout.ObjectField(item.prefab, typeof(SegmentItem), true) as SegmentItem;
+
+        if (item.canBeSpawned)
+        {
+            item.prefab = EditorGUILayout.ObjectField(item.prefab, typeof(SegmentItem), true, GUILayout.MaxWidth(2000), GUILayout.Height(20)) as SegmentItem;
+            GUI.backgroundColor = new Color(0.45f, 0.6f, 0.8f) * 2f;
+        }
+        else
+        {
+            GUI.backgroundColor = new Color(0.8f, 0.45f, 0.45f) * 2f;
+        }
+
+        if (GUILayout.Button("spawn", GUILayout.MaxWidth(2000), GUILayout.Height(20)))
+            item.canBeSpawned = !item.canBeSpawned;
+
         GUILayout.EndHorizontal();
+
+        GUI.backgroundColor = baseColor;
     }
     private void DrawBaseStats(Item item)
     {
         GUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("spawn chance", GUILayout.MaxWidth(100));
-        item.spawnChance = EditorGUILayout.IntField(item.spawnChance, GUILayout.MaxWidth(60));
-        GUILayout.FlexibleSpace();
-        EditorGUILayout.LabelField("stacks cap", GUILayout.MaxWidth(100));
-        item.stacksCap = EditorGUILayout.IntField(item.stacksCap, GUILayout.MaxWidth(60));
+        if (item.canBeSpawned)
+        {
+            EditorGUILayout.LabelField("spawn chance", GUILayout.MaxWidth(100));
+            item.spawnChance = EditorGUILayout.IntField(item.spawnChance, GUILayout.MaxWidth(60));
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.LabelField("stacks cap", GUILayout.MaxWidth(100));
+            item.stacksCap = EditorGUILayout.IntField(item.stacksCap, GUILayout.MaxWidth(60));
+        }
+        else
+        {
+            EditorGUILayout.LabelField("stacks cap", GUILayout.MaxWidth(100));
+            GUILayout.FlexibleSpace();
+            item.stacksCap = EditorGUILayout.IntField(item.stacksCap, GUILayout.MaxWidth(60));
+        }
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
@@ -142,7 +171,17 @@ public class ItemsDataEditor : Editor
         for (int i = 0; i < item.upgrades.Count; i++)
         {
             GUILayout.Space(8);
+
+            if (i == item.currentUpgrade) GUI.backgroundColor = new Color(0.45f, 0.6f, 0.8f) * 2f;
+
             GUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("", GUILayout.Width(8), GUILayout.Height(38)))
+            {
+                item.currentUpgrade = i == item.currentUpgrade ? -1 : i;
+            }
+            GUI.backgroundColor = baseColor;
+
             GUILayout.BeginVertical();
             item.upgrades[i].upgradeType = (UpgradeType)EditorGUILayout.EnumPopup(item.upgrades[i].upgradeType);
             item.upgrades[i].upgradeValue = EditorGUILayout.FloatField(item.upgrades[i].upgradeValue);

@@ -201,6 +201,11 @@ public class Pipe : MonoBehaviour
 
     private void GenerateItems(Platform platform)
     {
+        Debug.Log(string.Join(" | ", itemsDatabase.items.Where(whereItem => whereItem.canBeSpawned).Select(item => item.spawnChance +
+            item.upgrades.Where((up, index) => index <= item.currentUpgrade && up.upgradeType == UpgradeType.SpawnChance)
+            .Sum(chosenUp => (int)chosenUp.upgradeValue))));
+
+
         if (itemsDatabase.TryToGetRandomItem(out Item randomItem))
         {
             if (randomItem.constraints.IsNullOrEmpty())
