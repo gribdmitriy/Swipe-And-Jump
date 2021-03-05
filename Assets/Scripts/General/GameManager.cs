@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         MainMenu.Add("Menu", GameObject.Find("MenuUI"));
         MainMenu.Add("Settings", GameObject.Find("SettingsUI"));
         MainMenu.Add("Leaderboard", GameObject.Find("LeaderboardUI"));
-        MainMenu.Add("Shop", GameObject.Find("ShopUI"));
+        MainMenu.Add("Shop", GameObject.Find("UpgradesUI"));
 
         Game.Add("Gameplay", GameObject.Find("GamePlayUI"));
         Game.Add("Pause", GameObject.Find("PauseUI"));
