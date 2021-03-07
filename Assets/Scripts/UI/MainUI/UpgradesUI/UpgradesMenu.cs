@@ -30,7 +30,11 @@ public class UpgradesMenu : MonoBehaviour
         foreach (var item in items)
         {
             GameObject upItem = Instantiate(upgradeMenuItemPrefab, scrollContent);
-            menuItems.Add(upItem.GetComponent<UpgradeMenuItem>());
+            UpgradeMenuItem upMenuItem = upItem.GetComponent<UpgradeMenuItem>();
+
+            upMenuItem.Init(item);
+
+            menuItems.Add(upMenuItem);
         }
     }
 
@@ -57,10 +61,5 @@ public class UpgradesMenu : MonoBehaviour
             item.Show();
             yield return new WaitForSeconds(0.1f);
         }
-    }
-
-    public void PlayOpenMenuAnimation()
-    {
-        GameManager.ChangeMainMenuState(GameManager.MainMenuState.Menu);
     }
 }
