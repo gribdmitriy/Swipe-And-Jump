@@ -75,6 +75,13 @@ public class GameManager : MonoBehaviour
                 MainMenu["Shop"].SetActive(true);
                 gs = GlobalState.MainMenu;
                 break;
+            case MainMenuState.UpgradesMenu:
+                MainMenu["Menu"].SetActive(false);
+                MainMenu["Settings"].SetActive(false);
+                MainMenu["Leaderboard"].SetActive(false);
+                MainMenu["Shop"].SetActive(true);
+                gs = GlobalState.MainMenu;
+                break;
             default:
                 MainMenu["Menu"].SetActive(false);
                 MainMenu["Settings"].SetActive(false);
@@ -164,6 +171,7 @@ public class GameManager : MonoBehaviour
         Leaderboards,
         Settings,
         Shop,
+        UpgradesMenu,
         Disable
     }
 

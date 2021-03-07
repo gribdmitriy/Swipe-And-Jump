@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class ShopUI : MonoBehaviour
 {
-
     public Camera cam;
 
     public float minimum = 0F;
     public float maximum = 53F;
-
-    static float t = 0.0f;
-
-    private bool doit;
 
     private GameObject player;
 
@@ -26,7 +21,6 @@ public class ShopUI : MonoBehaviour
         GameManager.ChangeMainMenuState(GameManager.MainMenuState.Shop);
         cam.gameObject.GetComponent<Animator>().Play("OpenImprovements");
         gameObject.GetComponent<Animator>().Play("OpenShop");
-        doit = true;
     }
     
     public void OpenShop()
